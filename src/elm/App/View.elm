@@ -1,7 +1,7 @@
 module App.View exposing (..)
 
 import Html exposing (..)
-import App.Model as App exposing (initialModel, Model)
+import App.Model as App exposing (Model)
 import App.Update exposing (Msg)
 
 

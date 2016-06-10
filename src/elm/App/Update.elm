@@ -1,6 +1,6 @@
 module App.Update exposing (..)
 
-import App.Model as App exposing (initialModel, Model)
+import App.Model as App exposing (init, Model)
 
 
 type Msg
