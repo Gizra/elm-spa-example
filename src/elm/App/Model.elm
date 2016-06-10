@@ -16,8 +16,8 @@ type alias Model =
     }
 
 
-init : Model
-init =
+emptyModel : Model
+emptyModel =
     { activePage =
         Login
         -- , article = Article.initialModel

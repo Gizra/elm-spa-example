@@ -1,14 +1,15 @@
 module Main exposing (..)
 
-import Counter exposing (init, update, view)
+import App.Update exposing (init, update)
+import App.View exposing (view)
 import Html.App as Html
 
 
 main : Program Never
 main =
     Html.program
-        { init = init
-        , update = update
-        , view = view
+        { init = App.Update.init
+        , update = App.Update.update
+        , view = App.View.view
         , subscriptions = \_ -> Sub.none
         }
