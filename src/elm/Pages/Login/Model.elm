@@ -1,4 +1,4 @@
-module Pages.Login.Model exposing (..)
+module Pages.Login.Model exposing (emptyModel, Github, Model)
 
 import Exts.RemoteData exposing (..)
 

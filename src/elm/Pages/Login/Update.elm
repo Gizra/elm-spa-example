@@ -1,10 +1,10 @@
-module Pages.Login.Update exposing (..)
+module Pages.Login.Update exposing (Msg(..))
 
 import Exts.RemoteData exposing (..)
 import Http
 import Task
 import Pages.Login.Decoder exposing (decode)
-import Pages.Login.Model as Login exposing (emptyModel, Github, Model)
+import Pages.Login.Model as Login exposing (..)
 
 
 type Msg
@@ -25,11 +25,11 @@ update action model =
         FetchSucceed github ->
             { model | github = Success github } ! []
 
-        FetchFail _ ->
-            model ! []
+        FetchFail err ->
+            { model | github = Failure err } ! []
 
         SetName name ->
-            model ! []
+            { model | name = name } ! []
 
         TryLogin ->
             model ! [ tryLogin model.name ]
