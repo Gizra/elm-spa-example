@@ -2,7 +2,7 @@ module App.View exposing (..)
 
 import Exts.RemoteData exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (class, classList, src)
+import Html.Attributes exposing (class, classList, href, src, style, target)
 import Html.App as Html
 import Html.Events exposing (onClick)
 import App.Model exposing (..)
@@ -13,10 +13,13 @@ import Pages.Login.View exposing (view)
 
 view : Model -> Html Msg
 view model =
-    div [ class "ui container" ]
-        [ viewHeader model
-        , viewMainContent model
-        , pre [] [ text <| toString model ]
+    div []
+        [ div [ class "ui container" ]
+            [ viewHeader model
+            , viewMainContent model
+            , pre [] [ text <| toString model ]
+            ]
+        , viewFooter
         ]
 
 
@@ -104,3 +107,29 @@ viewMainContent model =
 
         PageNotFound ->
             div [] [ text "PageNotFound page" ]
+
+
+viewFooter : Html Msg
+viewFooter =
+    div
+        [ class "ui inverted vertical footer segment form-page"
+        , style
+            [ ( "position", "absolute" )
+            , ( "bottom", "0" )
+            , ( "width", "100%" )
+            ]
+        ]
+        [ div [ class "ui container" ]
+            [ a
+                [ href "http://gizra.com"
+                , target "_blank"
+                ]
+                [ text "Gizra" ]
+            , span [] [ text " // " ]
+            , a
+                [ href "https://github.com/amitaibu/elm-spa-exmple"
+                , target "_blank"
+                ]
+                [ text "Github" ]
+            ]
+        ]
