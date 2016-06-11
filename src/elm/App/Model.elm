@@ -1,4 +1,4 @@
-module App.Model exposing (..)
+module App.Model exposing (emptyModel, Model, Page(..))
 
 import Pages.Login.Model exposing (emptyModel, Model)
 
@@ -21,9 +21,7 @@ type alias Model =
 
 emptyModel : Model
 emptyModel =
-    { activePage =
-        Login
-        -- , article = Article.initialModel
+    { activePage = Login
     , nextPage = Nothing
     , pageLogin = Pages.Login.Model.emptyModel
     }

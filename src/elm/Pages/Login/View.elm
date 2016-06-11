@@ -2,7 +2,7 @@ module Pages.Login.View exposing (..)
 
 import Exts.RemoteData exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (action, class, disabled, height, hidden, placeholder, required, src, type', width)
+import Html.Attributes exposing (action, class, disabled, height, hidden, placeholder, required, src, type', value, width)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Pages.Login.Model exposing (..)
 import Pages.Login.Update exposing (..)
@@ -34,7 +34,13 @@ view model =
             [ onSubmit TryLogin
             , action "javascript:void(0);"
             ]
-            [ input [ type' "text", placeholder "Name", onInput SetName ] []
+            [ input
+                [ type' "text"
+                , placeholder "Name"
+                , onInput SetName
+                , value model.name
+                ]
+                []
               -- Submit button
             , button
                 [ onClick TryLogin
