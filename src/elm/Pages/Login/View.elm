@@ -12,7 +12,7 @@ view : Model -> Html Msg
 view model =
     let
         spinner =
-            i [ class "fa fa-spinner fa-spin" ] []
+            i [ class "fa fa-spinner fa-spin" ] [ text "Loading..." ]
 
         isLoading =
             case model.github of
@@ -38,8 +38,7 @@ view model =
               -- Submit button
             , button
                 [ onClick TryLogin
-                  -- , class "btn btn-lg btn-primary btn-block"
-                  -- , disabled (isFetchStatus || isFormEmpty)
+                , disabled isLoading
                 ]
                 [ span [ hidden <| not isLoading ] [ spinner ]
                 , span [ hidden isLoading ] [ text "Login" ]

@@ -2,6 +2,7 @@ module Pages.Login.Update exposing (update, Msg(..))
 
 import Exts.RemoteData exposing (..)
 import Http
+import String exposing (isEmpty)
 import Task
 import Pages.Login.Decoder exposing (decode)
 import Pages.Login.Model as Login exposing (..)
@@ -32,7 +33,10 @@ update action model =
             { model | name = name, github = NotAsked } ! []
 
         TryLogin ->
-            model ! [ tryLogin model.name ]
+            if isEmpty model.name then
+                model ! []
+            else
+                { model | github = Loading } ! [ tryLogin model.name ]
 
 
 tryLogin : String -> Cmd Msg
