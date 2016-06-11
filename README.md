@@ -12,17 +12,9 @@ Make sure the following are installed:
 
 ## Usage
 
-1. Serve locally, and watch file changes:
-
-`gulp`
-
-2. Prepare file for publishing (e.g. minify, and rev file names):
-
-`gulp publish`
-
-3. Deploy to GitHub's pages (`gh-pages` branch of your repository):
-
-`gulp deploy`
+1. Serve locally, and watch file changes: `gulp`
+1. Prepare file for publishing (e.g. minify, and rev file names): `gulp publish`
+1. Deploy to GitHub's pages (`gh-pages` branch of your repository): `gulp deploy`
 
 ## Unit Tests
 
