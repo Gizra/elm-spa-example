@@ -22,11 +22,30 @@ view model =
 
 viewHeader : Model -> Html Msg
 viewHeader model =
-    div [ class "ui secondary pointing menu" ] (navbarLoggedIn model)
+    let
+        navbar =
+            case model.pageLogin.github of
+                Success _ ->
+                    navbarAuthenticated
+
+                _ ->
+                    navbarAnonymous
+    in
+        div [ class "ui secondary pointing menu" ] (navbar model)
 
 
-navbarLoggedIn : Model -> List (Html Msg)
-navbarLoggedIn model =
+navbarAnonymous : Model -> List (Html Msg)
+navbarAnonymous model =
+    [ a
+        [ class "item active"
+        , onClick <| SetActivePage Login
+        ]
+        [ text "Login" ]
+    ]
+
+
+navbarAuthenticated : Model -> List (Html Msg)
+navbarAuthenticated model =
     let
         classByPage page =
             classList
