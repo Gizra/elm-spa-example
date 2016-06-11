@@ -14,7 +14,9 @@ setActivePage =
 
 getPage : Page -> Page
 getPage page =
-    update (SetActivePage page) emptyModel |> fst |> .activePage
+    update (SetActivePage page) emptyModel
+        |> fst
+        |> .activePage
 
 
 all : Test
