@@ -3,6 +3,7 @@ module App.View exposing (..)
 import Html exposing (..)
 import App.Model as App exposing (Model, Page)
 import App.Update exposing (Msg)
+import Pages.Login.View exposing (view)
 
 
 view : Model -> Html Msg

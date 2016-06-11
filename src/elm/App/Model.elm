@@ -1,5 +1,7 @@
 module App.Model exposing (..)
 
+import Pages.Login.Model exposing (emptyModel, Model)
+
 
 type Page
     = Article
@@ -13,6 +15,7 @@ type alias Model =
         -- , article : Article.Model
         -- If the user is anonymous, we want to know where to redirect them.
     , nextPage : Maybe Page
+    , pageLogin : Pages.Login.Model.Model
     }
 
 
@@ -22,4 +25,5 @@ emptyModel =
         Login
         -- , article = Article.initialModel
     , nextPage = Nothing
+    , pageLogin = Pages.Login.Model.emptyModel
     }
