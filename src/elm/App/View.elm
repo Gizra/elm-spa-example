@@ -1,6 +1,7 @@
 module App.View exposing (..)
 
 import Html exposing (..)
+import Html.App as Html
 import App.Model as App exposing (Model, Page)
 import App.Update exposing (Msg)
 import Pages.Login.View exposing (view)
@@ -26,7 +27,7 @@ viewMainContent model =
             div [] [ text "Article page" ]
 
         App.Login ->
-            div [] [ text "Login page" ]
+            Html.map App.Update.PageLogin (Pages.Login.View.view model.pageLogin)
 
         App.PageNotFound ->
             div [] [ text "PageNotFound page" ]

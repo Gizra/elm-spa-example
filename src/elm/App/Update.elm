@@ -25,4 +25,6 @@ update action model =
                 ( val, cmds ) =
                     Pages.Login.Update.update msg model.pageLogin
             in
-                { model | pageLogin = val } ! []
+                ( { model | pageLogin = val }
+                , Cmd.map PageLogin cmds
+                )
