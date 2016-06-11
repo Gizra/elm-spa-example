@@ -1,11 +1,12 @@
-module App.Update exposing (..)
+module App.Update exposing (init, update, Msg(..))
 
 import App.Model as App exposing (emptyModel, Model, Page)
 import Pages.Login.Update exposing (Msg)
 
 
 type Msg
-    = NoOp
+    = Logout
+    | NoOp
     | PageLogin Pages.Login.Update.Msg
     | SetActivePage App.Page
 
@@ -18,6 +19,9 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update action model =
     case action of
+        Logout ->
+            init
+
         NoOp ->
             model ! []
 
