@@ -12,9 +12,6 @@ type Page
 type alias Model =
     { activePage :
         Page
-        -- , article : Article.Model
-        -- If the user is anonymous, we want to know where to redirect them.
-    , nextPage : Maybe Page
     , pageLogin : Pages.Login.Model.Model
     }
 
@@ -22,6 +19,5 @@ type alias Model =
 emptyModel : Model
 emptyModel =
     { activePage = Login
-    , nextPage = Nothing
     , pageLogin = Pages.Login.Model.emptyModel
     }
