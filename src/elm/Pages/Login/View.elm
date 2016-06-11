@@ -1,4 +1,4 @@
-module Pages.Login.View exposing (..)
+module Pages.Login.View exposing (view)
 
 import Exts.RemoteData exposing (..)
 import Html exposing (..)

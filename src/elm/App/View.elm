@@ -103,7 +103,7 @@ viewMainContent model =
             div [] [ text "Article page" ]
 
         Login ->
-            Html.map App.Update.PageLogin (Pages.Login.View.view model.pageLogin)
+            Html.map PageLogin (Pages.Login.View.view model.pageLogin)
 
         PageNotFound ->
             div [] [ text "PageNotFound page" ]
