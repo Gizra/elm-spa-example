@@ -1,7 +1,7 @@
 module App.View exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, classList)
 import Html.App as Html
 import Html.Events exposing (onClick)
 import App.Model exposing (..)
@@ -31,24 +31,31 @@ viewHeader model =
 
 navbarLoggedIn : Model -> List (Html Msg)
 navbarLoggedIn model =
-    [ a
-        [ class "item active"
-        , onClick <| SetActivePage Login
-        ]
-        [ text "My Account" ]
-    , a
-        [ class "item"
-        , onClick <| SetActivePage PageNotFound
-        ]
-        [ text "404 page" ]
-    , div [ class "right menu" ]
+    let
+        classByPage page =
+            classList
+                [ ( "item", True )
+                , ( "active", page == model.activePage )
+                ]
+    in
         [ a
-            [ class "ui item"
-            , onClick <| Logout
+            [ classByPage Login
+            , onClick <| SetActivePage Login
             ]
-            [ text "Logout" ]
+            [ text "My Account" ]
+        , a
+            [ classByPage PageNotFound
+            , onClick <| SetActivePage PageNotFound
+            ]
+            [ text "404 page" ]
+        , div [ class "right menu" ]
+            [ a
+                [ class "ui item"
+                , onClick <| Logout
+                ]
+                [ text "Logout" ]
+            ]
         ]
-    ]
 
 
 viewMainContent : Model -> Html Msg
