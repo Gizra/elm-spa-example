@@ -1,6 +1,7 @@
 module App.View exposing (..)
 
 import Html exposing (..)
+import Html.Attributes exposing (class, classList)
 import Html.App as Html
 import Html.Events exposing (onClick)
 import App.Model exposing (..)
@@ -18,18 +19,42 @@ view model =
 
 viewHeader : Model -> Html Msg
 viewHeader model =
-    div []
-        [ text "Main app"
-        , navbarLoggedIn model
-        ]
+    div [ class "ui secondary pointing menu" ] (navbarLoggedIn model)
 
 
-navbarLoggedIn : Model -> Html Msg
+
+-- div []
+--     [ text "Main app"
+--     , navbarLoggedIn model
+--     ]
+
+
+navbarLoggedIn : Model -> List (Html Msg)
 navbarLoggedIn model =
-    ul []
-        [ li [ onClick <| SetActivePage Login ] [ text "Login" ]
-        , li [ onClick <| SetActivePage PageNotFound ] [ text "Page not found (404)" ]
-        , li [ onClick <| Logout ] [ text "Logout" ]
+    let
+        classByPage page =
+            classList
+                [ ( "item", True )
+                , ( "active", page == model.activePage )
+                ]
+    in
+        [ a
+            [ classByPage Login
+            , onClick <| SetActivePage Login
+            ]
+            [ text "My Account" ]
+        , a
+            [ classByPage PageNotFound
+            , onClick <| SetActivePage PageNotFound
+            ]
+            [ text "404 page" ]
+        , div [ class "right menu" ]
+            [ a
+                [ class "ui item"
+                , onClick <| Logout
+                ]
+                [ text "Logout" ]
+            ]
         ]
 
 
