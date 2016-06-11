@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/amitaibu/elm-v0.17-spa.svg?branch=master)](https://travis-ci.org/amitaibu/elm-v0.17-spa)
+[![Build Status](https://travis-ci.org/amitaibu/elm-spa-exmple.svg?branch=master)](https://travis-ci.org/amitaibu/elm-spa-exmple)
 
 > elm-v0.17-spa
 
