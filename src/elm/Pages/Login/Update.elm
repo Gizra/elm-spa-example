@@ -36,7 +36,14 @@ update action model =
             if isEmpty model.name then
                 model ! []
             else
-                { model | github = Loading } ! [ tryLogin model.name ]
+                case model.github of
+                    Failure _ ->
+                        -- This is the same name being re-submitted, so we can
+                        -- safely skip it.
+                        model ! []
+
+                    _ ->
+                        { model | github = Loading } ! [ tryLogin model.name ]
 
 
 tryLogin : String -> Cmd Msg
