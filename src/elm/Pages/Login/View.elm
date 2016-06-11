@@ -2,7 +2,7 @@ module Pages.Login.View exposing (..)
 
 import Exts.RemoteData exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (action, class, disabled, hidden, placeholder, required, src, type')
+import Html.Attributes exposing (action, class, disabled, height, hidden, placeholder, required, src, type', width)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Pages.Login.Model exposing (..)
 import Pages.Login.Update exposing (..)
@@ -44,6 +44,21 @@ view model =
                 [ span [ hidden <| not isLoading ] [ spinner ]
                 , span [ hidden isLoading ] [ text "Login" ]
                 ]
-            , img [ src avatar_url ] []
+            , viewAvatar model.github
             , pre [] [ text <| toString model ]
             ]
+
+
+viewAvatar : WebData Github -> Html Msg
+viewAvatar github =
+    case github of
+        Success github' ->
+            img
+                [ height 100
+                , width 100
+                , src github'.avatar_url
+                ]
+                []
+
+        _ ->
+            div [] []
