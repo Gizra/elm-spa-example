@@ -12,7 +12,7 @@ view : Model -> Html Msg
 view model =
     let
         spinner =
-            i [ class "fa fa-spinner fa-spin" ] [ text "Loading..." ]
+            i [ class "notched circle loading icon" ] []
 
         isLoading =
             case model.github of
