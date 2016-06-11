@@ -2,7 +2,7 @@ module Pages.Login.View exposing (..)
 
 import Exts.RemoteData exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (action, class, disabled, height, hidden, placeholder, required, type', value, width)
+import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Pages.Login.Model exposing (..)
 import Pages.Login.Update exposing (..)
@@ -10,6 +10,16 @@ import Pages.Login.Update exposing (..)
 
 view : Model -> Html Msg
 view model =
+    case model.github of
+        Success _ ->
+            viewAuthenticated model
+
+        _ ->
+            viewAnonymous model
+
+
+viewAnonymous : Model -> Html Msg
+viewAnonymous model =
     let
         spinner =
             i [ class "notched circle loading icon" ] []
@@ -53,5 +63,26 @@ view model =
                 ]
                 [ span [ hidden <| not isLoading ] [ spinner ]
                 , span [ hidden isLoading ] [ text "Login" ]
+                ]
+            ]
+
+
+viewAuthenticated : Model -> Html Msg
+viewAuthenticated model =
+    let
+        name =
+            case model.github of
+                Success github ->
+                    github.login
+
+                _ ->
+                    ""
+    in
+        div [ class "ui icon message" ]
+            [ i [ class "user icon" ]
+                []
+            , div [ class "content" ]
+                [ text <| "Welcome " ++ name
+                , p [] [ text "This is an account page" ]
                 ]
             ]
