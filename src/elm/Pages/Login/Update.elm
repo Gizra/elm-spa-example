@@ -1,4 +1,4 @@
-module Pages.Login.Update exposing (Msg(..))
+module Pages.Login.Update exposing (update, Msg(..))
 
 import Exts.RemoteData exposing (..)
 import Http
@@ -29,7 +29,7 @@ update action model =
             { model | github = Failure err } ! []
 
         SetName name ->
-            { model | name = name } ! []
+            { model | name = name, github = NotAsked } ! []
 
         TryLogin ->
             model ! [ tryLogin model.name ]
