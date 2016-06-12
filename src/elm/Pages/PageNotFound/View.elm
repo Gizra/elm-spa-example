@@ -9,7 +9,7 @@ import Html.Attributes exposing (class, href)
 
 view : Html a
 view =
-    div []
+    div [ class "ui segment center aligned" ]
         [ h2 [] [ text "This is a 404 page!" ]
         , a [ href "#!/" ] [ text "Back to safety" ]
         ]
