@@ -28,5 +28,8 @@ location2messages location =
         "#my-account" ->
             [ SetActivePage MyAccount ]
 
+        "#404" ->
+            [ SetActivePage PageNotFound ]
+
         _ ->
             []
