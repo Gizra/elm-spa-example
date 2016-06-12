@@ -18,7 +18,7 @@ view model =
         [ div [ class "ui container" ]
             [ viewHeader model
             , viewMainContent model
-            , pre [] [ text <| toString model ]
+            , pre [ class "ui padded secondary segment" ] [ text <| toString model ]
             ]
         , viewFooter
         ]
