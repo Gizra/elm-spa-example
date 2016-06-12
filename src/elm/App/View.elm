@@ -99,8 +99,8 @@ viewAvatar github =
 viewMainContent : Model -> Html Msg
 viewMainContent model =
     case model.activePage of
-        Article ->
-            div [] [ text "Article page" ]
+        MyAccount ->
+            div [] [ text "My account page" ]
 
         Login ->
             Html.map PageLogin (Pages.Login.View.view model.pageLogin)
