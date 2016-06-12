@@ -16,12 +16,12 @@ delta2url previous current =
             Just <| UrlChange NewEntry "/#my-account"
 
         PageNotFound ->
-            Nothing
+            Just <| UrlChange NewEntry "/#404"
 
 
 location2messages : Location -> List Msg
 location2messages location =
-    case Debug.log "location" location.hash of
+    case location.hash of
         "#login" ->
             [ SetActivePage Login ]
 
