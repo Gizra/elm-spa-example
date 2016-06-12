@@ -1,6 +1,6 @@
 module App.Update exposing (init, update, Msg(..))
 
-import App.Model as App exposing (emptyModel, Model, Page)
+import App.Model as App exposing (..)
 import Pages.Login.Update exposing (Msg)
 
 
@@ -31,11 +31,16 @@ update action model =
                     Pages.Login.Update.update msg model.pageLogin
             in
                 ( { model
-                    | pageLogin = val
+                    | nextPage = Just MyAccount
+                    , pageLogin = val
                     , user = user
                   }
                 , Cmd.map PageLogin cmds
                 )
 
         SetActivePage page ->
-            { model | activePage = page } ! []
+            { model
+                | activePage = page
+                , nextPage = Nothing
+            }
+                ! []

@@ -11,16 +11,6 @@ import Pages.Login.Update exposing (..)
 
 view : WebData User -> Model -> Html Msg
 view user model =
-    case user of
-        Success _ ->
-            viewAuthenticated user model
-
-        _ ->
-            viewAnonymous user model
-
-
-viewAnonymous : WebData User -> Model -> Html Msg
-viewAnonymous user model =
     let
         spinner =
             i [ class "notched circle loading icon" ] []
@@ -56,26 +46,5 @@ viewAnonymous user model =
                 ]
                 [ span [ hidden <| not isLoading ] [ spinner ]
                 , span [ hidden isLoading ] [ text "Login" ]
-                ]
-            ]
-
-
-viewAuthenticated : WebData User -> Model -> Html Msg
-viewAuthenticated user model =
-    let
-        name =
-            case user of
-                Success user' ->
-                    user'.name
-
-                _ ->
-                    ""
-    in
-        div [ class "ui icon message" ]
-            [ i [ class "user icon" ]
-                []
-            , div [ class "content" ]
-                [ text <| "Welcome " ++ name
-                , p [] [ text "This is an account page" ]
                 ]
             ]
