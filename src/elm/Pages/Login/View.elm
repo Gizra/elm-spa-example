@@ -4,41 +4,34 @@ import Exts.RemoteData exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
+import User.Model exposing (..)
 import Pages.Login.Model exposing (..)
 import Pages.Login.Update exposing (..)
 
 
-view : Model -> Html Msg
-view model =
-    case model.github of
+view : WebData User -> Model -> Html Msg
+view user model =
+    case user of
         Success _ ->
-            viewAuthenticated model
+            viewAuthenticated user model
 
         _ ->
-            viewAnonymous model
+            viewAnonymous user model
 
 
-viewAnonymous : Model -> Html Msg
-viewAnonymous model =
+viewAnonymous : WebData User -> Model -> Html Msg
+viewAnonymous user model =
     let
         spinner =
             i [ class "notched circle loading icon" ] []
 
         isLoading =
-            case model.github of
+            case user of
                 Loading ->
                     True
 
                 _ ->
                     False
-
-        avatar_url =
-            case model.github of
-                Success github ->
-                    github.avatar_url
-
-                _ ->
-                    ""
     in
         Html.form
             [ onSubmit TryLogin
@@ -67,13 +60,13 @@ viewAnonymous model =
             ]
 
 
-viewAuthenticated : Model -> Html Msg
-viewAuthenticated model =
+viewAuthenticated : WebData User -> Model -> Html Msg
+viewAuthenticated user model =
     let
         name =
-            case model.github of
-                Success github ->
-                    github.login
+            case user of
+                Success user' ->
+                    user'.name
 
                 _ ->
                     ""

@@ -7,7 +7,7 @@ import Html.App as Html
 import Html.Events exposing (onClick)
 import App.Model exposing (..)
 import App.Update exposing (..)
-import Pages.Login.Model exposing (Github)
+import User.Model exposing (..)
 import Pages.Login.View exposing (..)
 import Pages.PageNotFound.View exposing (..)
 
@@ -28,7 +28,7 @@ viewHeader : Model -> Html Msg
 viewHeader model =
     let
         navbar =
-            case model.pageLogin.github of
+            case model.user of
                 Success _ ->
                     navbarAuthenticated
 
@@ -58,7 +58,7 @@ navbarAuthenticated model =
         [ text "My Account" ]
     , viewPageNotFoundItem model.activePage
     , div [ class "right menu" ]
-        [ viewAvatar model.pageLogin.github
+        [ viewAvatar model.user
         , a
             [ class "ui item"
             , onClick <| Logout
@@ -77,17 +77,17 @@ viewPageNotFoundItem activePage =
         [ text "404 page" ]
 
 
-viewAvatar : WebData Github -> Html Msg
-viewAvatar github =
-    case github of
-        Success github' ->
+viewAvatar : WebData User -> Html Msg
+viewAvatar user =
+    case user of
+        Success user' ->
             a
                 [ onClick <| SetActivePage Login
                 , class "ui item"
                 ]
                 [ img
                     [ class "ui avatar image"
-                    , src github'.avatar_url
+                    , src user'.avatarUrl
                     ]
                     []
                 ]
@@ -103,7 +103,7 @@ viewMainContent model =
             div [] [ text "My account page" ]
 
         Login ->
-            Html.map PageLogin (Pages.Login.View.view model.pageLogin)
+            Html.map PageLogin (Pages.Login.View.view model.user model.pageLogin)
 
         PageNotFound ->
             -- We don't need to pass any cmds, so we can call the view directly

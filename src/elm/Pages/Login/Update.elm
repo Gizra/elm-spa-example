@@ -31,7 +31,7 @@ update action model =
             ( model, Cmd.none, Failure err )
 
         SetName name ->
-            ( model, Cmd.none, NotAsked )
+            ( { model | name = name }, Cmd.none, NotAsked )
 
         TryLogin ->
             if isEmpty model.name then
