@@ -41,41 +41,40 @@ viewHeader model =
 navbarAnonymous : Model -> List (Html Msg)
 navbarAnonymous model =
     [ a
-        [ class "item active"
+        [ classByPage Login model.activePage
         , onClick <| SetActivePage Login
         ]
         [ text "Login" ]
+    , viewPageNotFoundItem model.activePage
     ]
 
 
 navbarAuthenticated : Model -> List (Html Msg)
 navbarAuthenticated model =
-    let
-        classByPage page =
-            classList
-                [ ( "item", True )
-                , ( "active", page == model.activePage )
-                ]
-    in
-        [ a
-            [ classByPage Login
-            , onClick <| SetActivePage Login
-            ]
-            [ text "My Account" ]
-        , a
-            [ classByPage PageNotFound
-            , onClick <| SetActivePage PageNotFound
-            ]
-            [ text "404 page" ]
-        , div [ class "right menu" ]
-            [ viewAvatar model.pageLogin.github
-            , a
-                [ class "ui item"
-                , onClick <| Logout
-                ]
-                [ text "Logout" ]
-            ]
+    [ a
+        [ classByPage Login model.activePage
+        , onClick <| SetActivePage Login
         ]
+        [ text "My Account" ]
+    , viewPageNotFoundItem model.activePage
+    , div [ class "right menu" ]
+        [ viewAvatar model.pageLogin.github
+        , a
+            [ class "ui item"
+            , onClick <| Logout
+            ]
+            [ text "Logout" ]
+        ]
+    ]
+
+
+viewPageNotFoundItem : Page -> Html Msg
+viewPageNotFoundItem activePage =
+    a
+        [ classByPage PageNotFound activePage
+        , onClick <| SetActivePage PageNotFound
+        ]
+        [ text "404 page" ]
 
 
 viewAvatar : WebData Github -> Html Msg
@@ -134,4 +133,15 @@ viewFooter =
                 ]
                 [ text "Github" ]
             ]
+        ]
+
+
+{-| Get menu items classes. This function gets the active page and checks if
+it is indeed the page used.
+-}
+classByPage : Page -> Page -> Attribute a
+classByPage page activePage =
+    classList
+        [ ( "item", True )
+        , ( "active", page == activePage )
         ]
