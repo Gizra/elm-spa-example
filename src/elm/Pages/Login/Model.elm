@@ -1,22 +1,12 @@
-module Pages.Login.Model exposing (emptyModel, Github, Model)
-
-import Exts.RemoteData exposing (..)
-
-
-type alias Github =
-    { avatar_url : String
-    , login : String
-    }
+module Pages.Login.Model exposing (emptyModel, Model)
 
 
 type alias Model =
     { name : String
-    , github : WebData Github
     }
 
 
 emptyModel : Model
 emptyModel =
     { name = ""
-    , github = NotAsked
     }

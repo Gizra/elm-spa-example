@@ -4,13 +4,14 @@ import Exts.RemoteData exposing (..)
 import Http
 import String exposing (isEmpty)
 import Task
-import Pages.Login.Decoder exposing (decode)
+import User.Decoder exposing (..)
+import User.Model exposing (..)
 import Pages.Login.Model as Login exposing (..)
 
 
 type Msg
     = FetchFail Http.Error
-    | FetchSucceed Github
+    | FetchSucceed User
     | SetName String
     | TryLogin
 
@@ -20,30 +21,23 @@ init =
     emptyModel ! []
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> ( Model, Cmd Msg, WebData User )
 update action model =
     case action of
         FetchSucceed github ->
-            { model | github = Success github } ! []
+            ( model, Cmd.none, Success github )
 
         FetchFail err ->
-            { model | github = Failure err } ! []
+            ( model, Cmd.none, Failure err )
 
         SetName name ->
-            { model | name = name, github = NotAsked } ! []
+            ( model, Cmd.none, NotAsked )
 
         TryLogin ->
             if isEmpty model.name then
-                model ! []
+                ( model, Cmd.none, NotAsked )
             else
-                case model.github of
-                    Failure _ ->
-                        -- This is the same name being re-submitted, so we can
-                        -- safely skip it.
-                        model ! []
-
-                    _ ->
-                        { model | github = Loading } ! [ tryLogin model.name ]
+                ( model, tryLogin model.name, Loading )
 
 
 tryLogin : String -> Cmd Msg
@@ -52,4 +46,4 @@ tryLogin name =
         url =
             "https://api.github.com/users/" ++ name
     in
-        Task.perform FetchFail FetchSucceed (Http.get decode url)
+        Task.perform FetchFail FetchSucceed (Http.get decodeFromGithub url)
