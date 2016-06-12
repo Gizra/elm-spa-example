@@ -8,7 +8,8 @@ import Html.Events exposing (onClick)
 import App.Model exposing (..)
 import App.Update exposing (..)
 import Pages.Login.Model exposing (Github)
-import Pages.Login.View exposing (view)
+import Pages.Login.View exposing (..)
+import Pages.PageNotFound.View exposing (..)
 
 
 view : Model -> Html Msg
@@ -106,7 +107,8 @@ viewMainContent model =
             Html.map PageLogin (Pages.Login.View.view model.pageLogin)
 
         PageNotFound ->
-            div [] [ text "PageNotFound page" ]
+            -- We don't need to pass any cmds, so we can call the view directly
+            Pages.PageNotFound.View.view
 
 
 viewFooter : Html Msg

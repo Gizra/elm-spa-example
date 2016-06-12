@@ -10,8 +10,7 @@ type Page
 
 
 type alias Model =
-    { activePage :
-        Page
+    { activePage : Page
     , pageLogin : Pages.Login.Model.Model
     }
 
