@@ -4,8 +4,8 @@ import Pages.Login.Model exposing (emptyModel, Model)
 
 
 type Page
-    = Article
-    | Login
+    = Login
+    | MyAccount
     | PageNotFound
 
 
