@@ -27,10 +27,13 @@ update action model =
 
         PageLogin msg ->
             let
-                ( val, cmds ) =
+                ( val, cmds, user ) =
                     Pages.Login.Update.update msg model.pageLogin
             in
-                ( { model | pageLogin = val }
+                ( { model
+                    | pageLogin = val
+                    , user = user
+                  }
                 , Cmd.map PageLogin cmds
                 )
 
