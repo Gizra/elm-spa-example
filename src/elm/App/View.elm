@@ -128,7 +128,7 @@ viewFooter =
                 [ text "Gizra" ]
             , span [] [ text " // " ]
             , a
-                [ href "https://github.com/amitaibu/elm-spa-example"
+                [ href "https://github.com/Gizra/elm-spa-example"
                 , target "_blank"
                 ]
                 [ text "Github" ]

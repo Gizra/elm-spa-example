@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/amitaibu/elm-spa-example.svg?branch=master)](https://travis-ci.org/amitaibu/elm-spa-example)
+[![Build Status](https://travis-ci.org/Gizra/elm-spa-example.svg?branch=master)](https://travis-ci.org/Gizra/elm-spa-example)
 
 > elm v0.17 single page application (SPA) example
 
