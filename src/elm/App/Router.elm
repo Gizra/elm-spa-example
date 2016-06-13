@@ -9,6 +9,9 @@ import RouteUrl exposing (HistoryEntry(..), UrlChange)
 delta2url : Model -> Model -> Maybe UrlChange
 delta2url previous current =
     case current.activePage of
+        AccessDenied ->
+            Nothing
+
         Login ->
             Just <| UrlChange NewEntry "/#login"
 

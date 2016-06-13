@@ -6,7 +6,8 @@ import Pages.Login.Model exposing (emptyModel, Model)
 
 
 type Page
-    = Login
+    = AccessDenied
+    | Login
     | MyAccount
     | PageNotFound
 

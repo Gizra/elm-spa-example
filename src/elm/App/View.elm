@@ -52,8 +52,8 @@ navbarAnonymous model =
 navbarAuthenticated : Model -> List (Html Msg)
 navbarAuthenticated model =
     [ a
-        [ classByPage Login model.activePage
-        , onClick <| SetActivePage Login
+        [ classByPage MyAccount model.activePage
+        , onClick <| SetActivePage MyAccount
         ]
         [ text "My Account" ]
     , viewPageNotFoundItem model.activePage
@@ -99,11 +99,14 @@ viewAvatar user =
 viewMainContent : Model -> Html Msg
 viewMainContent model =
     case model.activePage of
-        MyAccount ->
-            div [] [ text "My account page" ]
+        AccessDenied ->
+            div [] [ text "Access denied" ]
 
         Login ->
             Html.map PageLogin (Pages.Login.View.view model.user model.pageLogin)
+
+        MyAccount ->
+            div [] [ text "My account page" ]
 
         PageNotFound ->
             -- We don't need to pass any cmds, so we can call the view directly
