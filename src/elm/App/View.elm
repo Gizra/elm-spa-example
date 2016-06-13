@@ -15,7 +15,7 @@ import Pages.PageNotFound.View exposing (..)
 view : Model -> Html Msg
 view model =
     div []
-        [ div [ class "ui container" ]
+        [ div [ class "ui container main" ]
             [ viewHeader model
             , viewMainContent model
             , pre [ class "ui padded secondary segment" ] [ text <| toString model ]
@@ -114,11 +114,6 @@ viewFooter : Html Msg
 viewFooter =
     div
         [ class "ui inverted vertical footer segment form-page"
-        , style
-            [ ( "position", "absolute" )
-            , ( "bottom", "0" )
-            , ( "width", "100%" )
-            ]
         ]
         [ div [ class "ui container" ]
             [ a
