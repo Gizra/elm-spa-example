@@ -13,7 +13,6 @@ type Page
 
 type alias Model =
     { activePage : Page
-    , nextPage : Maybe Page
     , pageLogin : Pages.Login.Model.Model
     , user : WebData User
     }
@@ -22,7 +21,6 @@ type alias Model =
 emptyModel : Model
 emptyModel =
     { activePage = Login
-    , nextPage = Nothing
     , pageLogin = Pages.Login.Model.emptyModel
     , user = NotAsked
     }
