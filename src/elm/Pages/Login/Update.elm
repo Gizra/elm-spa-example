@@ -42,30 +42,43 @@ update user msg model =
                 ( { model | name = noSpacesName }, Cmd.none, userStatus )
 
         TryLogin ->
-            -- Try to fetch the user from GitHub only if it was not asked yet.
-            -- In case we are still loading, error or a succesful fetch we don't
-            -- want to repeat it.
-            case user of
-                NotAsked ->
-                    if isEmpty model.name then
-                        -- Name was not asked, however it is empty.
-                        ( model, Cmd.none, NotAsked )
-                    else
-                        -- Fetch the name from GitHub, and indicate we are
-                        -- in the middle of "Loading".
-                        ( model, fetchFromGitHub model.name, Loading )
-
-                _ ->
-                    -- We are not in "NotAsked" state, so return the existing
-                    -- value
-                    ( model, Cmd.none, user )
+            let
+                ( cmd, userStatus ) =
+                    getCmdAndUserStatusForTryLogin user model.name
+            in
+                ( model, cmd, userStatus )
 
 
-{-| User just tried to add a space to the name, so after triming it's actually
-the same. Thus, we avoid changing the user status to prevent from re-fetching a
-possibly wrong name. For example. if the user status would have been Failure,
-the existing name is "foo" and user tried to pass "foo " (notice the trailing
-space), then in fact no change should happen.
+{-| Try to fetch the user from GitHub only if it was not asked yet.
+In case we are still loading, error or a succesful fetch we don't want to repeat
+it.
+-}
+getCmdAndUserStatusForTryLogin : WebData User -> String -> ( Cmd Msg, WebData User )
+getCmdAndUserStatusForTryLogin user name =
+    case user of
+        NotAsked ->
+            if isEmpty name then
+                -- Name was not asked, however it is empty.
+                ( Cmd.none, NotAsked )
+            else
+                -- Fetch the name from GitHub, and indicate we are
+                -- in the middle of "Loading".
+                ( fetchFromGitHub name, Loading )
+
+        _ ->
+            -- We are not in "NotAsked" state, so return the existing
+            -- value
+            ( Cmd.none, user )
+
+
+{-| Determine if the user status should change after setting a new name.
+When there is a valid name change, status should change to NotAsked.
+However if for example a user just tried to add a space to the name, so after
+triming it's actually the same. Thus, we avoid changing the user status to
+prevent from re-fetching a possibly wrong name.
+For example. if the user status would have been Failure, the existing name is
+"foo" and user tried to pass "foo " (notice the trailing space), then in fact no
+change should happen.
 -}
 getUserStatusFromNameChange : WebData User -> String -> String -> WebData User
 getUserStatusFromNameChange user currentName newName =
