@@ -19,7 +19,11 @@ view model =
         [ div [ class "ui container main" ]
             [ viewHeader model
             , viewMainContent model
-            , pre [ class "ui padded secondary segment" ] [ text <| toString model ]
+            , pre [ class "ui padded secondary segment" ]
+                [ div [] [ text <| "activePage: " ++ toString model.activePage ]
+                , div [] [ text <| "pageLogin: " ++ toString model.pageLogin ]
+                , div [] [ text <| "user: " ++ toString model.user ]
+                ]
             ]
         , viewFooter
         ]
