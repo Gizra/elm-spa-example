@@ -53,7 +53,7 @@ update user msg model =
                     else
                         -- Fetch the name from GitHub, and indicate we are
                         -- in the middle of "Loading".
-                        ( model, tryLogin model.name, Loading )
+                        ( model, fetchFromGitHub model.name, Loading )
 
                 _ ->
                     -- We are not in "NotAsked" state, so return the existing
@@ -77,8 +77,8 @@ getUserStatusFromNameChange user currentName newName =
 
 {-| Get data from GitHub.
 -}
-tryLogin : String -> Cmd Msg
-tryLogin name =
+fetchFromGitHub : String -> Cmd Msg
+fetchFromGitHub name =
     let
         url =
             "https://api.github.com/users/" ++ name
