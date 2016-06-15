@@ -8,7 +8,6 @@ import Pages.Login.Update exposing (Msg)
 
 type Msg
     = Logout
-    | NoOp
     | PageLogin Pages.Login.Update.Msg
     | SetActivePage Page
 
@@ -19,13 +18,10 @@ init =
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update action model =
-    case action of
+update msg model =
+    case msg of
         Logout ->
             init
-
-        NoOp ->
-            model ! []
 
         PageLogin msg ->
             let
