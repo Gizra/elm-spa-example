@@ -1,7 +1,6 @@
 module App.View exposing (..)
 
 import Exts.RemoteData exposing (RemoteData(..), WebData)
-
 import Html exposing (..)
 import Html.Attributes exposing (class, classList, href, src, style, target)
 import Html.App as Html
@@ -87,7 +86,7 @@ viewAvatar user =
     case user of
         Success user' ->
             a
-                [ onClick <| SetActivePage Login
+                [ onClick <| SetActivePage MyAccount
                 , class "ui item"
                 ]
                 [ img
