@@ -35,8 +35,21 @@ update user msg model =
             let
                 noSpacesName =
                     replace All (regex " ") (\_ -> "") name
+
+                userStatus =
+                    if model.name == noSpacesName then
+                        -- User just tried to add a space to the name, so after
+                        -- triming it's actually the same. Thus, we avoid changing
+                        -- the user status to prevent from re-fetching a possibly
+                        -- wrong name. For example. if the user status would have
+                        -- been Failure, the existing name is "foo" and user tried
+                        -- to pass "foo " (notice the trailing space), then in fact
+                        -- no change should happen.
+                        user
+                    else
+                        NotAsked
             in
-                ( { model | name = noSpacesName }, Cmd.none, NotAsked )
+                ( { model | name = noSpacesName }, Cmd.none, userStatus )
 
         TryLogin ->
             -- Try to fetch the user from GitHub only if it was not asked yet.

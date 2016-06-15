@@ -16,8 +16,10 @@ setName =
             (assertEqual "withSpaces" (getName "with Spaces"))
         , test "set name with multiple spaces"
             (assertEqual "withSpaces" (getName "  with   Spaces  "))
-        , test "set name should result with NotAsked user status"
-            (assertEqual NotAsked getUserStatusAfterSetName)
+        , test "set name should result with NotAsked user status if name changed"
+            (assertEqual NotAsked (getUserStatusAfterSetName Loading "someName" emptyModel))
+        , test "set name should result with existing user status if name didn't change"
+            (assertEqual Loading (getUserStatusAfterSetName Loading "  someName  " { name = "someName" }))
         ]
 
 
@@ -35,11 +37,11 @@ getName name =
         model.name
 
 
-getUserStatusAfterSetName : WebData User
-getUserStatusAfterSetName =
+getUserStatusAfterSetName : WebData User -> String -> Model -> WebData User
+getUserStatusAfterSetName user name model =
     let
         ( _, _, user ) =
-            update NotAsked (SetName "someName") emptyModel
+            update user (SetName name) model
     in
         user
 
