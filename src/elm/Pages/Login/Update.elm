@@ -22,8 +22,8 @@ init =
 
 
 update : Msg -> Model -> ( Model, Cmd Msg, WebData User )
-update action model =
-    case action of
+update msg model =
+    case msg of
         FetchSucceed github ->
             ( model, Cmd.none, Success github )
 
