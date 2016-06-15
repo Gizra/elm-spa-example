@@ -1,6 +1,6 @@
 module Pages.Login.Update exposing (update, Msg(..))
 
-import Exts.RemoteData exposing (..)
+import Exts.RemoteData exposing (RemoteData(..), WebData)
 import Http
 import Regex exposing (regex, replace, HowMany(All))
 import String exposing (isEmpty)

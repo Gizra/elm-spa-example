@@ -1,7 +1,7 @@
 module App.Update exposing (init, update, Msg(..))
 
 import App.Model exposing (..)
-import Exts.RemoteData exposing (..)
+import Exts.RemoteData exposing (RemoteData(..), WebData)
 import User.Model exposing (..)
 import Pages.Login.Update exposing (Msg)
 

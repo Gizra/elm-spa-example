@@ -1,6 +1,7 @@
 module Pages.MyAccount.View exposing (view)
 
-import Exts.RemoteData exposing (..)
+import Exts.RemoteData exposing (RemoteData(..), WebData)
+
 import Html exposing (a, div, h2, i, p, text, Html)
 import Html.Attributes exposing (class, href)
 import User.Model exposing (..)
