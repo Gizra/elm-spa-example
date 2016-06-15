@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "summary": "helpful summary of your project, less than 80 characters",
+    "summary": "Single page application example in Elm v0.17",
     "repository": "https://github.com/Gizra/elm-spa-exmple.git",
     "license": "BSD3",
     "source-directories": [
