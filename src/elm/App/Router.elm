@@ -25,6 +25,9 @@ delta2url previous current =
 location2messages : Location -> List Msg
 location2messages location =
     case location.hash of
+        "" ->
+            []
+
         "#login" ->
             [ SetActivePage Login ]
 
@@ -35,4 +38,4 @@ location2messages location =
             [ SetActivePage PageNotFound ]
 
         _ ->
-            []
+            [ SetActivePage PageNotFound ]
