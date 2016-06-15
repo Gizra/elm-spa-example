@@ -37,17 +37,7 @@ update user msg model =
                     replace All (regex " ") (\_ -> "") name
 
                 userStatus =
-                    if model.name == noSpacesName then
-                        -- User just tried to add a space to the name, so after
-                        -- triming it's actually the same. Thus, we avoid changing
-                        -- the user status to prevent from re-fetching a possibly
-                        -- wrong name. For example. if the user status would have
-                        -- been Failure, the existing name is "foo" and user tried
-                        -- to pass "foo " (notice the trailing space), then in fact
-                        -- no change should happen.
-                        user
-                    else
-                        NotAsked
+                    getUserStatusFromNameChange user model.name noSpacesName
             in
                 ( { model | name = noSpacesName }, Cmd.none, userStatus )
 
@@ -71,6 +61,22 @@ update user msg model =
                     ( model, Cmd.none, user )
 
 
+{-| User just tried to add a space to the name, so after triming it's actually
+the same. Thus, we avoid changing the user status to prevent from re-fetching a
+possibly wrong name. For example. if the user status would have been Failure,
+the existing name is "foo" and user tried to pass "foo " (notice the trailing
+space), then in fact no change should happen.
+-}
+getUserStatusFromNameChange : WebData User -> String -> String -> WebData User
+getUserStatusFromNameChange user currentName newName =
+    if currentName == newName then
+        user
+    else
+        NotAsked
+
+
+{-| Get data from GitHub.
+-}
 tryLogin : String -> Cmd Msg
 tryLogin name =
     let
