@@ -33,6 +33,7 @@ update user msg model =
 
         SetName name ->
             let
+                -- Remove spaces from name.
                 noSpacesName =
                     replace All (regex " ") (\_ -> "") name
 
