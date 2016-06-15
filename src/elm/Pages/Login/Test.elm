@@ -10,7 +10,7 @@ setName =
     suite "setName msg"
         [ test "set name without spaces"
             (assertEqual "noSpaces" (getName "noSpaces"))
-        , test "set name wit space"
+        , test "set name with space"
             (assertEqual "withSpaces" (getName "with Spaces"))
         , test "set name with multiple spaces"
             (assertEqual "withSpaces" (getName "  with   Spaces  "))
