@@ -22,8 +22,8 @@ init =
     emptyModel ! []
 
 
-update : Msg -> Model -> ( Model, Cmd Msg, WebData User )
-update msg model =
+update : WebData User -> Msg -> Model -> ( Model, Cmd Msg, WebData User )
+update user msg model =
     case msg of
         FetchSucceed github ->
             ( model, Cmd.none, Success github )
@@ -39,10 +39,23 @@ update msg model =
                 ( { model | name = noSpacesName }, Cmd.none, NotAsked )
 
         TryLogin ->
-            if isEmpty model.name then
-                ( model, Cmd.none, NotAsked )
-            else
-                ( model, tryLogin model.name, Loading )
+            -- Try to fetch the user from GitHub only if it was not asked yet.
+            -- In case we are still loading, error or a succesful fetch we don't
+            -- want to repeat it.
+            case user of
+                NotAsked ->
+                    if isEmpty model.name then
+                        -- Name was not asked, however it is empty.
+                        ( model, Cmd.none, NotAsked )
+                    else
+                        -- Fetch the name from GitHub, and indicate we are
+                        -- in the middle of "Loading".
+                        ( model, tryLogin model.name, Loading )
+
+                _ ->
+                    -- We are not in "NotAsked" state, so return the existing
+                    -- value
+                    ( model, Cmd.none, user )
 
 
 tryLogin : String -> Cmd Msg

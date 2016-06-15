@@ -26,7 +26,7 @@ update msg model =
         PageLogin msg ->
             let
                 ( val, cmds, user ) =
-                    Pages.Login.Update.update msg model.pageLogin
+                    Pages.Login.Update.update model.user msg model.pageLogin
 
                 model' =
                     { model
