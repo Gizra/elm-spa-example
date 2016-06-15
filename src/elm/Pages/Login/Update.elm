@@ -2,6 +2,7 @@ module Pages.Login.Update exposing (update, Msg(..))
 
 import Exts.RemoteData exposing (..)
 import Http
+import Regex exposing (regex, replace, HowMany(All))
 import String exposing (isEmpty)
 import Task
 import User.Decoder exposing (..)
@@ -31,7 +32,11 @@ update msg model =
             ( model, Cmd.none, Failure err )
 
         SetName name ->
-            ( { model | name = name }, Cmd.none, NotAsked )
+            let
+                noSpacesName =
+                    replace All (regex " ") (\_ -> "") name
+            in
+                ( { model | name = noSpacesName }, Cmd.none, NotAsked )
 
         TryLogin ->
             if isEmpty model.name then
