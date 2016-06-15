@@ -1,6 +1,7 @@
 module App.View exposing (..)
 
-import Exts.RemoteData exposing (..)
+import Exts.RemoteData exposing (RemoteData(..), WebData)
+
 import Html exposing (..)
 import Html.Attributes exposing (class, classList, href, src, style, target)
 import Html.App as Html
