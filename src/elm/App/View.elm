@@ -9,6 +9,7 @@ import App.Model exposing (..)
 import App.Update exposing (..)
 import User.Model exposing (..)
 import Pages.Login.View exposing (..)
+import Pages.MyAccount.View exposing (..)
 import Pages.PageNotFound.View exposing (..)
 
 
@@ -110,7 +111,7 @@ viewMainContent model =
             Html.map PageLogin (Pages.Login.View.view model.user model.pageLogin)
 
         MyAccount ->
-            div [] [ text "My account page" ]
+            Pages.MyAccount.View.view model.user
 
         PageNotFound ->
             -- We don't need to pass any cmds, so we can call the view directly
