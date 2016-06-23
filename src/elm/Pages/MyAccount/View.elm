@@ -30,20 +30,18 @@ view user =
         avatar =
             case user of
                 Success user' ->
-                    img
-                        [ class "ui top aligned circular tiny image"
-                        , src user'.avatarUrl
-                        ]
+                    img [ src user'.avatarUrl ]
                         []
 
                 _ ->
                     i [ class "user icon" ]
                       []
     in
-        div [ class "ui icon message" ]
-            [ avatar
-            , div [ class "ui image label" ]
-                [ text <| "Welcome " ++ name
-                , div [class "detail"] [text <| "(" ++ login ++ ")"]
+        div
+            [ class "ui centered card" ]
+            [ div [class "image"] [ avatar ]
+            , div [ class "content" ]
+                [ div [ class "header" ] [ text <| "Welcome " ++ name ]
+                , div [ class "meta" ] [ text <| login ]
                 ]
             ]
