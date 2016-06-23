@@ -13,29 +13,10 @@ import User.Model exposing (..)
 view : WebData User -> Html a
 view user =
     let
-        name =
-            case user of
-                Success user' ->
-                    user'.name
-
-                _ ->
-                    ""
-        login =
-            case user of
-                Success user' ->
-                    user'.login
-
-                _ ->
-                    ""
-        avatar =
-            case user of
-                Success user' ->
-                    img [ src user'.avatarUrl ]
-                        []
-
-                _ ->
-                    i [ class "user icon" ]
-                      []
+        (name, login, avatar) =
+         case user of
+             Success val -> ( val.name, val.login, img [ src val.avatarUrl ] [] )
+             _ -> ( "" ,"", div [] [])
     in
         div
             [ class "ui centered card" ]
