@@ -16,7 +16,7 @@ view user =
         (name, login, avatar) =
          case user of
              Success val -> ( val.name, val.login, img [ src val.avatarUrl ] [] )
-             _ -> ( "" ,"", div [] [])
+             _ -> ( "", "", div [] [])
     in
         div
             [ class "ui centered card" ]
