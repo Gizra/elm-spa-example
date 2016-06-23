@@ -4,7 +4,6 @@ import App.Model exposing (Model)
 import App.Router exposing (..)
 import App.Update exposing (init, update, Msg)
 import App.View exposing (view)
-import Html.App as Html
 import RouteUrl
 
 
