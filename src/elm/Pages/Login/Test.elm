@@ -25,7 +25,7 @@ setName =
 
 dummyUser : User
 dummyUser =
-    { name = "foo", avatarUrl = "https://example.com" }
+    { name = "Foo", login = "foo", avatarUrl = "https://example.com" }
 
 
 getName : String -> String

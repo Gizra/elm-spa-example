@@ -33,7 +33,7 @@ getPageAsAuthenticated : Page -> Page
 getPageAsAuthenticated page =
     let
         dummyUser =
-            { name = "foo", avatarUrl = "https://example.com" }
+            { name = "Foo", login = "foo", avatarUrl = "https://example.com" }
 
         model =
             { emptyModel | user = Success dummyUser }
