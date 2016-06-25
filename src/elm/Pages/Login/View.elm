@@ -35,7 +35,7 @@ view user model =
                     [ type' "text"
                     , placeholder "Name"
                     , onInput SetName
-                    , value model.name
+                    , value model.login
                     ]
                     []
                 ]

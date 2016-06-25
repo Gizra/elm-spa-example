@@ -31,21 +31,21 @@ update user msg model =
         FetchFail err ->
             ( model, Cmd.none, Failure err )
 
-        SetName name ->
+        SetName login ->
             let
-                -- Remove spaces from name.
+                -- Remove spaces from login.
                 noSpacesName =
-                    replace All (regex " ") (\_ -> "") name
+                    replace All (regex " ") (\_ -> "") login
 
                 userStatus =
-                    getUserStatusFromNameChange user model.name noSpacesName
+                    getUserStatusFromNameChange user model.login noSpacesName
             in
-                ( { model | name = noSpacesName }, Cmd.none, userStatus )
+                ( { model | login = noSpacesName }, Cmd.none, userStatus )
 
         TryLogin ->
             let
                 ( cmd, userStatus ) =
-                    getCmdAndUserStatusForTryLogin user model.name
+                    getCmdAndUserStatusForTryLogin user model.login
             in
                 ( model, cmd, userStatus )
 
@@ -55,16 +55,16 @@ In case we are still loading, error or a succesful fetch we don't want to repeat
 it.
 -}
 getCmdAndUserStatusForTryLogin : WebData User -> String -> ( Cmd Msg, WebData User )
-getCmdAndUserStatusForTryLogin user name =
+getCmdAndUserStatusForTryLogin user login =
     case user of
         NotAsked ->
-            if isEmpty name then
-                -- Name was not asked, however it is empty.
+            if isEmpty login then
+                -- login was not asked, however it is empty.
                 ( Cmd.none, NotAsked )
             else
-                -- Fetch the name from GitHub, and indicate we are
+                -- Fetch the login from GitHub, and indicate we are
                 -- in the middle of "Loading".
-                ( fetchFromGitHub name, Loading )
+                ( fetchFromGitHub login, Loading )
 
         _ ->
             -- We are not in "NotAsked" state, so return the existing
@@ -92,9 +92,9 @@ getUserStatusFromNameChange user currentName newName =
 {-| Get data from GitHub.
 -}
 fetchFromGitHub : String -> Cmd Msg
-fetchFromGitHub name =
+fetchFromGitHub login =
     let
         url =
-            "https://api.github.com/users/" ++ name
+            "https://api.github.com/users/" ++ login
     in
         Task.perform FetchFail FetchSucceed (Http.get decodeFromGithub url)

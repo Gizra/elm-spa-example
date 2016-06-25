@@ -15,7 +15,16 @@ view user =
         ( name, login, avatar ) =
             case user of
                 Success val ->
-                    ( val.name, val.login, img [ src val.avatarUrl ] [] )
+                    let
+                        name' =
+                            case val.name of
+                                Just name ->
+                                    name
+
+                                Nothing ->
+                                    val.login
+                    in
+                        ( name', val.login, img [ src val.avatarUrl ] [] )
 
                 _ ->
                     ( "", "", div [] [] )
