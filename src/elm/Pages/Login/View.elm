@@ -1,7 +1,6 @@
 module Pages.Login.View exposing (view)
 
 import Exts.RemoteData exposing (RemoteData(..), WebData)
-
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
