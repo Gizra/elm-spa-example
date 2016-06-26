@@ -32,8 +32,8 @@ view user model =
                 [ label [] [ text "GitHub Name" ]
                 , input
                     [ type' "text"
-                    , placeholder "Name"
-                    , onInput SetName
+                    , placeholder "Login name"
+                    , onInput SetLogin
                     , value model.login
                     ]
                     []
