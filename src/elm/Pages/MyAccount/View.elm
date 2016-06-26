@@ -33,6 +33,6 @@ view user =
             [ div [ class "image" ] [ avatar ]
             , div [ class "content" ]
                 [ div [ class "header" ] [ text <| "Welcome " ++ name ]
-                , div [ class "meta" ] [ text <| login ]
+                , div [ class "meta" ] [ text <| "@" ++ login ]
                 ]
             ]
