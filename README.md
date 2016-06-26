@@ -2,6 +2,8 @@
 
 > elm v0.17 single page application (SPA) example
 
+Read about this app in the post [Faithful Elm and the Amazing Router](http://www.gizra.com/content/faithful-elm-amazing-router/)
+
 ## Installation
 
 Make sure the following are installed:
