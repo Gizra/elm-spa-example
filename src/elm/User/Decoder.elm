@@ -10,3 +10,4 @@ decodeFromGithub =
     Json.Decode.succeed User
         |: ("avatar_url" := Json.Decode.string)
         |: ("login" := Json.Decode.string)
+        |: ("name" := Json.Decode.maybe Json.Decode.string)

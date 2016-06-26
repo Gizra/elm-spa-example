@@ -7,41 +7,41 @@ import Pages.Login.Update exposing (..)
 import User.Model exposing (..)
 
 
-setName : Test
-setName =
-    suite "setName msg"
+setLogin : Test
+setLogin =
+    suite "SetLogin msg"
         [ test "set name without spaces"
-            (assertEqual "noSpaces" (getName "noSpaces"))
+            (assertEqual "noSpaces" (getLogin "noSpaces"))
         , test "set name with space"
-            (assertEqual "withSpaces" (getName "with Spaces"))
+            (assertEqual "withSpaces" (getLogin "with Spaces"))
         , test "set name with multiple spaces"
-            (assertEqual "withSpaces" (getName "  with   Spaces  "))
+            (assertEqual "withSpaces" (getLogin "  with   Spaces  "))
         , test "set name should result with NotAsked user status if name changed"
-            (assertEqual NotAsked (getUserStatusAfterSetName Loading "someName" emptyModel))
+            (assertEqual NotAsked (getUserStatusAfterSetLogin Loading "someName" emptyModel))
         , test "set name should result with existing user status if name didn't change"
-            (assertEqual Loading (getUserStatusAfterSetName Loading "  someName  " { name = "someName" }))
+            (assertEqual Loading (getUserStatusAfterSetLogin Loading "  someName  " { login = "someName" }))
         ]
 
 
 dummyUser : User
 dummyUser =
-    { name = "foo", avatarUrl = "https://example.com" }
+    { name = Just "Foo", login = "foo", avatarUrl = "https://example.com" }
 
 
-getName : String -> String
-getName name =
+getLogin : String -> String
+getLogin login =
     let
         ( model, _, _ ) =
-            update NotAsked (SetName name) emptyModel
+            update NotAsked (SetLogin login) emptyModel
     in
-        model.name
+        model.login
 
 
-getUserStatusAfterSetName : WebData User -> String -> Model -> WebData User
-getUserStatusAfterSetName user name model =
+getUserStatusAfterSetLogin : WebData User -> String -> Model -> WebData User
+getUserStatusAfterSetLogin user login model =
     let
         ( _, _, user ) =
-            update user (SetName name) model
+            update user (SetLogin login) model
     in
         user
 
@@ -54,7 +54,7 @@ tryLogin : Test
 tryLogin =
     suite "TryLogin msg"
         [ test "Fetch empty name"
-            (assertEqual NotAsked (getTryLogin NotAsked { name = "" }))
+            (assertEqual NotAsked (getTryLogin NotAsked { login = "" }))
         ]
 
 
@@ -70,6 +70,6 @@ getTryLogin user model =
 all : Test
 all =
     suite "Pages.Login tests"
-        [ setName
+        [ setLogin
         , tryLogin
         ]

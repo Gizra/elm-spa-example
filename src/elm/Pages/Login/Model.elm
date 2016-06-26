@@ -2,11 +2,11 @@ module Pages.Login.Model exposing (emptyModel, Model)
 
 
 type alias Model =
-    { name : String
+    { login : String
     }
 
 
 emptyModel : Model
 emptyModel =
-    { name = ""
+    { login = ""
     }
