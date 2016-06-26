@@ -13,7 +13,7 @@ import Pages.Login.Model as Login exposing (..)
 type Msg
     = FetchFail Http.Error
     | FetchSucceed User
-    | SetName String
+    | SetLogin String
     | TryLogin
 
 
@@ -31,7 +31,7 @@ update user msg model =
         FetchFail err ->
             ( model, Cmd.none, Failure err )
 
-        SetName login ->
+        SetLogin login ->
             let
                 -- Remove spaces from login.
                 noSpacesName =
