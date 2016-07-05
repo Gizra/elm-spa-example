@@ -26,25 +26,24 @@ view user model =
         Html.form
             [ onSubmit TryLogin
             , action "javascript:void(0);"
-            , class "ui form"
+            , class "ui form stacked segment"
             ]
-            [ div [ class "field" ]
-                [ label [] [ text "GitHub Name" ]
-                , input
+            [ div [ class "ui action input" ]
+                [ input
                     [ type' "text"
-                    , placeholder "Login name"
+                    , placeholder "Github name"
                     , onInput SetLogin
                     , value model.login
                     ]
                     []
-                ]
-              -- Submit button
-            , button
-                [ onClick TryLogin
-                , disabled isLoading
-                , class "ui primary button"
-                ]
-                [ span [ hidden <| not isLoading ] [ spinner ]
-                , span [ hidden isLoading ] [ text "Login" ]
+                  -- Submit button
+                , button
+                    [ onClick TryLogin
+                    , disabled isLoading
+                    , class "ui primary button"
+                    ]
+                    [ span [ hidden <| not isLoading ] [ spinner ]
+                    , span [ hidden isLoading ] [ text "Login" ]
+                    ]
                 ]
             ]
