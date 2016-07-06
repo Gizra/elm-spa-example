@@ -1,0 +1,14 @@
+{
+  "name": "Elm SPA example",
+  "icons": [
+    {
+      "src": "launcher-icon-0-75x.png",
+      "sizes": "36x36",
+      "type": "image/png",
+      "density": 0.75
+    },
+  ],
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "landscape"
+}
