@@ -15,20 +15,29 @@ view user model =
         spinner =
             i [ class "notched circle loading icon" ] []
 
-        isLoading =
+        ( isLoading, isError ) =
             case user of
                 Loading ->
-                    True
+                    ( True, False )
+
+                Failure _ ->
+                    ( False, True )
 
                 _ ->
-                    False
+                    ( False, False )
+
+        inputClasses =
+            classList
+                [ ( "ui action input", True )
+                , ( "error", isError )
+                ]
     in
         Html.form
             [ onSubmit TryLogin
             , action "javascript:void(0);"
             , class "ui stacked segment"
             ]
-            [ div [ class "ui action input" ]
+            [ div [ inputClasses ]
                 [ input
                     [ type' "text"
                     , placeholder "Github name"
@@ -39,7 +48,7 @@ view user model =
                   -- Submit button
                 , button
                     [ onClick TryLogin
-                    , disabled isLoading
+                    , disabled (isLoading || isError)
                     , class "ui primary button"
                     ]
                     [ span [ hidden <| not isLoading ] [ spinner ]
