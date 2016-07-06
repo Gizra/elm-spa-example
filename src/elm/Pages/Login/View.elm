@@ -26,7 +26,7 @@ view user model =
         Html.form
             [ onSubmit TryLogin
             , action "javascript:void(0);"
-            , class "ui form stacked segment"
+            , class "ui stacked segment"
             ]
             [ div [ class "ui action input" ]
                 [ input
