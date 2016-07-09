@@ -34,13 +34,13 @@ update user msg model =
         SetLogin login ->
             let
                 -- Remove spaces from login.
-                noSpacesName =
+                noSpacesLogin =
                     replace All (regex " ") (\_ -> "") login
 
                 userStatus =
-                    getUserStatusFromNameChange user model.login noSpacesName
+                    getUserStatusFromNameChange user model.login noSpacesLogin
             in
-                ( { model | login = noSpacesName }, Cmd.none, userStatus )
+                ( { model | login = noSpacesLogin }, Cmd.none, userStatus )
 
         TryLogin ->
             let
