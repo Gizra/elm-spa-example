@@ -77,7 +77,7 @@ When there is a valid name change, status should change to NotAsked.
 However if for example a user just tried to add a space to the name, so after
 triming it's actually the same. Thus, we avoid changing the user status to
 prevent from re-fetching a possibly wrong name.
-For example. if the user status would have been Failure, the existing name is
+For example, if the user status would have been Failure, the existing name is
 "foo" and user tried to pass "foo " (notice the trailing space), then in fact no
 change should happen.
 -}
