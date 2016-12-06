@@ -24,8 +24,6 @@ decodeInt =
                         Err _ ->
                             Decode.fail "Cannot convert string to integer"
                 )
-          -- @todo: Needs to be re-added
-          -- , Decode.customDecoder Decode.string String.toInt
         ]
 
 
