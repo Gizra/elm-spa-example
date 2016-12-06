@@ -1,16 +1,15 @@
 module App.View exposing (..)
 
-import RemoteData exposing (RemoteData(..), WebData)
-import Html exposing (..)
-import Html.Attributes exposing (class, classList, href, src, style, target)
-import Html.App as Html
-import Html.Events exposing (onClick)
 import App.Model exposing (..)
 import App.Update exposing (..)
+import Html exposing (..)
+import Html.Attributes exposing (class, classList, href, src, style, target)
+import Html.Events exposing (onClick)
 import User.Model exposing (..)
 import Pages.Login.View exposing (..)
 import Pages.MyAccount.View exposing (..)
 import Pages.PageNotFound.View exposing (..)
+import RemoteData exposing (RemoteData(..), WebData)
 
 
 view : Model -> Html Msg

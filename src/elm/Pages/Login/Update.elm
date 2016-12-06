@@ -7,28 +7,26 @@ import User.Model exposing (..)
 import Pages.Login.Model as Login exposing (..)
 import Pages.Login.Decoder exposing (..)
 import RemoteData exposing (RemoteData(..), WebData)
+import Utils.WebData exposing (sendWithHandler)
 
 
 update : BackendUrl -> Msg -> Model -> ( Model, Cmd Msg, ( WebData User, AccessToken ) )
 update backendUrl msg model =
     case msg of
-        FetchSucceed response ->
+        HandleFetchedAccessToken webDataAccessToken ->
             let
                 accessToken =
-                    response.data
+                    Maybe.withDefault "" <| RemoteData.toMaybe webDataAccessToken
             in
-                ( model, fetchUserFromBackend backendUrl accessToken, ( NotAsked, accessToken ) )
+                ( model
+                , fetchUserFromBackend backendUrl accessToken
+                , ( NotAsked, accessToken )
+                )
 
-        FetchUserSucceed accessToken response ->
+        HandleFetchedUser accessToken webDataUser ->
             ( model
             , Cmd.none
-            , ( Success response.data, accessToken )
-            )
-
-        FetchFail err ->
-            ( model
-            , Cmd.none
-            , ( Failure err, "" )
+            , ( webDataUser, accessToken )
             )
 
         SetName name ->
@@ -36,10 +34,10 @@ update backendUrl msg model =
                 loginForm =
                     model.loginForm
 
-                loginForm' =
+                loginForm_ =
                     { loginForm | name = name }
             in
-                ( { model | loginForm = loginForm' }
+                ( { model | loginForm = loginForm_ }
                 , Cmd.none
                 , ( NotAsked, "" )
                 )
@@ -49,47 +47,41 @@ update backendUrl msg model =
                 loginForm =
                     model.loginForm
 
-                loginForm' =
+                loginForm_ =
                     { loginForm | pass = pass }
             in
-                ( { model | loginForm = loginForm' }
+                ( { model | loginForm = loginForm_ }
                 , Cmd.none
                 , ( NotAsked, "" )
                 )
 
         TryLogin ->
             ( model
-            , fetchFromBackend backendUrl model.loginForm
+            , fetchAccessTokenFromBackend backendUrl model.loginForm
             , ( Loading, "" )
             )
 
 
-{-| Get data from backend.
+{-| Get access token from backend.
 -}
-fetchFromBackend : BackendUrl -> LoginForm -> Cmd Msg
-fetchFromBackend backendUrl loginForm =
+fetchAccessTokenFromBackend : BackendUrl -> LoginForm -> Cmd Msg
+fetchAccessTokenFromBackend backendUrl loginForm =
     let
         credentials =
             encodeCredentials ( loginForm.name, loginForm.pass )
-
-        httpTask =
-            HttpBuilder.get (backendUrl ++ "/api/login-token")
-                |> withHeader "Authorization" ("Basic " ++ credentials)
-                |> send (jsonReader decodeAccessToken) (jsonReader decodeError)
     in
-        Task.perform FetchFail FetchSucceed httpTask
+        HttpBuilder.get (backendUrl ++ "/api/login-token")
+            |> withHeader "Authorization" ("Basic " ++ credentials)
+            |> sendWithHandler decodeAccessToken HandleFetchedAccessToken
 
 
-{-| Get data from backend.
+{-| Get user data from backend.
 -}
 fetchUserFromBackend : BackendUrl -> String -> Cmd Msg
 fetchUserFromBackend backendUrl accessToken =
     let
         url =
             HttpBuilder.url (backendUrl ++ "/api/me") [ ( "access_token", accessToken ) ]
-
-        httpTask =
-            HttpBuilder.get url
-                |> send (jsonReader decodeUser) stringReader
     in
-        Task.perform FetchFail (FetchUserSucceed accessToken) httpTask
+        HttpBuilder.get url
+            |> sendWithHandler decodeUser HandleFetchedUser

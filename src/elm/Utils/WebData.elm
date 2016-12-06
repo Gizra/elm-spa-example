@@ -1,4 +1,4 @@
-module Utils.WebData exposing (WebData, viewError, sendWithHandler)
+module Utils.WebData exposing (sendWithHandler, viewError)
 
 import HttpBuilder exposing (..)
 import Json.Decode exposing (Decoder)

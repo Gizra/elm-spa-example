@@ -14,7 +14,7 @@ type Page
 
 type Msg
     = Logout
-    | PageLogin Pages.Login.Update.Msg
+    | PageLogin Pages.Login.Model.Msg
     | SetActivePage Page
 
 

@@ -38,14 +38,14 @@ view user model =
             ]
             [ div [ inputClasses ]
                 [ input
-                    [ type' "text"
+                    [ type_ "text"
                     , placeholder "Name"
                     , onInput SetName
                     , value model.loginForm.name
                     ]
                     []
                 , input
-                    [ type' "text"
+                    [ type_ "text"
                     , placeholder "Password"
                     , onInput SetPassword
                     , value model.loginForm.pass

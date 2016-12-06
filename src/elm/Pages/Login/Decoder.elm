@@ -3,13 +3,13 @@ module Pages.Login.Decoder exposing (..)
 import Base64 exposing (encode)
 import Json.Decode as Decode
 import Pages.Login.Model exposing (AccessToken)
-import User.Decoder as UserDecoder exposing (..)
+import User.Decoder as UserDecoder exposing (decodeUser)
 import User.Model exposing (User)
 
 
 decodeUser : Decode.Decoder User
 decodeUser =
-    Decode.at [ "data", "0" ] <| UserDecoder.decode
+    Decode.at [ "data", "0" ] <| UserDecoder.decodeUser
 
 
 decodeAccessToken : Decode.Decoder AccessToken
