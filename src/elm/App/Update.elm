@@ -1,9 +1,11 @@
-module App.Update exposing (init, update, Msg(..))
+port module App.Update exposing (init, update)
 
 import App.Model exposing (..)
+import Config
+import Dict
+import Pages.Login.Update
 import RemoteData exposing (RemoteData(..), WebData)
 import User.Model exposing (..)
-import Pages.Login.Update exposing (Msg)
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -26,38 +28,53 @@ init flags =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        Logout ->
-            ( { emptyModel | accessToken = "", config = model.config }
-            , accessTokenPort ""
-            )
+    let
+        backendUrl =
+            case model.config of
+                Success config ->
+                    config.backendUrl
 
-        PageLogin msg ->
-            let
-                ( val, cmds, user ) =
-                    Pages.Login.Update.update model.user msg model.pageLogin
+                _ ->
+                    ""
+    in
+        case msg of
+            Logout ->
+                ( { emptyModel | accessToken = "", config = model.config }
+                , accessTokenPort ""
+                )
 
-                model_ =
-                    { model
-                        | pageLogin = val
-                        , user = user
-                    }
+            PageLogin msg ->
+                let
+                    ( val, cmds, ( webDataUser, accessToken ) ) =
+                        Pages.Login.Update.update backendUrl msg model.pageLogin
 
-                model__ =
-                    case user of
-                        -- If user was successfuly fetched, reditect to my
-                        -- account page.
-                        Success _ ->
-                            update (SetActivePage MyAccount) model_
-                                |> Tuple.first
+                    modelUpdated =
+                        { model
+                            | pageLogin = val
+                            , accessToken = accessToken
+                            , user = webDataUser
+                        }
 
-                        _ ->
-                            model_
-            in
-                ( model__, Cmd.map PageLogin cmds )
+                    ( modelWithRedirect, setActivePageCmds ) =
+                        case webDataUser of
+                            -- If user was successfuly fetched, reditect to my
+                            -- account page.
+                            Success _ ->
+                                update (SetActivePage MyAccount) modelUpdated
 
-        SetActivePage page ->
-            { model | activePage = setActivePageAccess model.user page } ! []
+                            _ ->
+                                modelUpdated ! []
+                in
+                    ( modelWithRedirect
+                    , Cmd.batch
+                        [ Cmd.map PageLogin cmds
+                        , accessTokenPort accessToken
+                        , setActivePageCmds
+                        ]
+                    )
+
+            SetActivePage page ->
+                { model | activePage = setActivePageAccess model.user page } ! []
 
 
 {-| Determine is a page can be accessed by a user (anonymous or authenticated),
@@ -80,3 +97,8 @@ setActivePageAccess user page =
                 AccessDenied
             else
                 page
+
+
+{-| Send access token to JS.
+-}
+port accessTokenPort : String -> Cmd msg
