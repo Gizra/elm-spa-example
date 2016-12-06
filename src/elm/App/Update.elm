@@ -11,19 +11,23 @@ import User.Model exposing (..)
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
-        cmds =
+        ( config, cmds ) =
             case (Dict.get flags.hostname Config.configs) of
-                Just val ->
-                    -- Check if we have already an access token.
-                    if (String.isEmpty flags.accessToken) then
-                        Cmd.none
-                    else
-                        Cmd.map PageLogin <| Pages.Login.Update.fetchUserFromBackend val.backendUrl flags.accessToken
+                Just config ->
+                    let
+                        cmd =
+                            if (String.isEmpty flags.accessToken) then
+                                -- Check if we have already an access token.
+                                Cmd.none
+                            else
+                                Cmd.map PageLogin <| Pages.Login.Update.fetchUserFromBackend config.backendUrl flags.accessToken
+                    in
+                        ( Success config, cmd )
 
                 Nothing ->
-                    Cmd.none
+                    ( Failure "No config found", Cmd.none )
     in
-        { emptyModel | accessToken = flags.accessToken } ! [ cmds ]
+        { emptyModel | accessToken = flags.accessToken, config = config } ! [ cmds ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -36,6 +40,9 @@ update msg model =
 
                 _ ->
                     ""
+
+        _ =
+            Debug.log "backendUrl" backendUrl
     in
         case msg of
             Logout ->

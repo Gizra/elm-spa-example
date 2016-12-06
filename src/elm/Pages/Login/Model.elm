@@ -1,7 +1,6 @@
 module Pages.Login.Model exposing (..)
 
 import Http
-import RemoteData exposing (RemoteData(..), WebData)
 import User.Model exposing (User)
 
 

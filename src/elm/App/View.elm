@@ -1,7 +1,7 @@
 module App.View exposing (..)
 
 import App.Model exposing (..)
-import App.Update exposing (..)
+import Config.View
 import Html exposing (..)
 import Html.Attributes exposing (class, classList, href, src, style, target)
 import Html.Events exposing (onClick)
@@ -14,18 +14,23 @@ import RemoteData exposing (RemoteData(..), WebData)
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ div [ class "ui container main" ]
-            [ viewHeader model
-            , viewMainContent model
-            , pre [ class "ui padded secondary segment" ]
-                [ div [] [ text <| "activePage: " ++ toString model.activePage ]
-                , div [] [ text <| "pageLogin: " ++ toString model.pageLogin ]
-                , div [] [ text <| "user: " ++ toString model.user ]
+    case model.config of
+        Failure err ->
+            Config.View.view
+
+        _ ->
+            div []
+                [ div [ class "ui container main" ]
+                    [ viewHeader model
+                    , viewMainContent model
+                    , pre [ class "ui padded secondary segment" ]
+                        [ div [] [ text <| "activePage: " ++ toString model.activePage ]
+                        , div [] [ text <| "pageLogin: " ++ toString model.pageLogin ]
+                        , div [] [ text <| "user: " ++ toString model.user ]
+                        ]
+                    ]
+                , viewFooter
                 ]
-            ]
-        , viewFooter
-        ]
 
 
 viewHeader : Model -> Html Msg
