@@ -10,13 +10,6 @@ import User.Model exposing (..)
 import Pages.Login.Model as Login exposing (..)
 
 
-type Msg
-    = FetchFail Http.Error
-    | FetchSucceed User
-    | SetLogin String
-    | TryLogin
-
-
 init : ( Model, Cmd Msg )
 init =
     emptyModel ! []

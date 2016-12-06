@@ -1,13 +1,13 @@
 module User.Decoder exposing (decodeFromGithub)
 
-import Json.Decode exposing ((:=))
-import Json.Decode.Extra exposing ((|:))
+import Json.Decode exposing (nullable, string, Decoder)
+import Json.Decode.Pipeline exposing (decode, required)
 import User.Model exposing (..)
 
 
-decodeFromGithub : Json.Decode.Decoder User
+decodeFromGithub : Decoder User
 decodeFromGithub =
-    Json.Decode.succeed User
-        |: ("avatar_url" := Json.Decode.string)
-        |: ("login" := Json.Decode.string)
-        |: ("name" := Json.Decode.maybe Json.Decode.string)
+    decode User
+        |> required "avatar_url" string
+        |> required "login" string
+        |> required "name" (nullable string)

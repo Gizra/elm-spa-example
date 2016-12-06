@@ -12,6 +12,12 @@ type Page
     | PageNotFound
 
 
+type Msg
+    = Logout
+    | PageLogin Pages.Login.Update.Msg
+    | SetActivePage Page
+
+
 type alias Model =
     { activePage : Page
     , pageLogin : Pages.Login.Model.Model

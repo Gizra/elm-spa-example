@@ -6,15 +6,22 @@ import User.Model exposing (..)
 import Pages.Login.Update exposing (Msg)
 
 
-type Msg
-    = Logout
-    | PageLogin Pages.Login.Update.Msg
-    | SetActivePage Page
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    let
+        cmds =
+            case (Dict.get flags.hostname Config.configs) of
+                Just val ->
+                    -- Check if we have already an access token.
+                    if (String.isEmpty flags.accessToken) then
+                        Cmd.none
+                    else
+                        Cmd.map PageLogin <| Pages.Login.Update.fetchUserFromBackend val.backendUrl flags.accessToken
 
-
-init : ( Model, Cmd Msg )
-init =
-    emptyModel ! []
+                Nothing ->
+                    Cmd.none
+    in
+        { emptyModel | accessToken = flags.accessToken } ! [ cmds ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
