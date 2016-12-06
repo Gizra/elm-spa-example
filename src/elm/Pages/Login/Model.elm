@@ -34,5 +34,5 @@ type Msg
 
 emptyModel : Model
 emptyModel =
-    { loginForm = LoginForm "admin" "admin"
+    { loginForm = LoginForm "demo" "1234"
     }

@@ -6,14 +6,14 @@ import Dict exposing (..)
 
 local : Model
 local =
-    { backendUrl = "https://example.io"
+    { backendUrl = "https://live-hedley-elm.pantheonsite.io"
     , name = "local"
     }
 
 
 production : Model
 production =
-    { backendUrl = "https://api.example.io"
+    { backendUrl = "https://live-hedley-elm.pantheonsite.io"
     , name = "gh-pages"
     }
 
