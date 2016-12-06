@@ -1,7 +1,7 @@
 module App.Test exposing (all)
 
 import ElmTest exposing (..)
-import Exts.RemoteData exposing (RemoteData(..))
+import RemoteData exposing (RemoteData(..))
 import App.Model exposing (..)
 import App.Update exposing (..)
 

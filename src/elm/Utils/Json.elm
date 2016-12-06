@@ -14,7 +14,8 @@ decodeInt : Decoder Int
 decodeInt =
     Decode.oneOf
         [ Decode.int
-        , Decode.customDecoder Decode.string String.toInt
+          -- @todo: Needs to be re-added
+          -- , Decode.customDecoder Decode.string String.toInt
         ]
 
 

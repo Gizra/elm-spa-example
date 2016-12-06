@@ -1,6 +1,6 @@
 module Pages.Login.Model exposing (..)
 
-import HttpBuilder
+import Http
 import User.Model exposing (User)
 
 
@@ -25,9 +25,9 @@ type alias Model =
 
 
 type Msg
-    = FetchFail (HttpBuilder.Error String)
-    | FetchSucceed (HttpBuilder.Response AccessToken)
-    | FetchUserSucceed AccessToken (HttpBuilder.Response User)
+    = FetchFail (Http.Error String)
+    | FetchSucceed (Http.Response AccessToken)
+    | FetchUserSucceed AccessToken (Http.Response User)
     | SetName String
     | SetPassword String
     | TryLogin

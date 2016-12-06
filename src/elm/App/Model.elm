@@ -1,8 +1,8 @@
 module App.Model exposing (emptyModel, Model, Page(..))
 
-import Exts.RemoteData exposing (RemoteData(..), WebData)
-import User.Model exposing (..)
 import Pages.Login.Model exposing (emptyModel, Model)
+import RemoteData exposing (RemoteData(..), WebData)
+import User.Model exposing (..)
 
 
 type Page

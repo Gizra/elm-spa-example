@@ -1,12 +1,11 @@
 module Pages.Login.View exposing (view)
 
-import RemoteData exposing (RemoteData(..))
-import Utils.WebData exposing (WebData)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
-import User.Model exposing (..)
 import Pages.Login.Model exposing (..)
+import RemoteData exposing (RemoteData(..), WebData)
+import User.Model exposing (..)
 
 
 view : WebData User -> Model -> Html Msg

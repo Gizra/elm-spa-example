@@ -6,8 +6,7 @@ import Task
 import User.Model exposing (..)
 import Pages.Login.Model as Login exposing (..)
 import Pages.Login.Decoder exposing (..)
-import RemoteData exposing (RemoteData(..))
-import Utils.WebData exposing (WebData)
+import RemoteData exposing (RemoteData(..), WebData)
 
 
 update : BackendUrl -> Msg -> Model -> ( Model, Cmd Msg, ( WebData User, AccessToken ) )

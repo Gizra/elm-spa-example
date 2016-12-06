@@ -2,33 +2,30 @@ module Utils.WebData exposing (WebData, viewError, sendWithHandler)
 
 import HttpBuilder exposing (..)
 import Json.Decode exposing (Decoder)
-import RemoteData exposing (RemoteData(..))
+import RemoteData exposing (RemoteData(..), WebData)
 import Html exposing (..)
+import Http
 import Task
-
-
-type alias WebData a =
-    RemoteData (HttpBuilder.Error String) a
 
 
 {-| Provide some `Html` to view an error message.
 -}
-viewError : HttpBuilder.Error String -> Html any
+viewError : Http.Error String -> Html any
 viewError error =
     case error of
-        UnexpectedPayload message ->
+        Http.BadPayload message _ ->
             div []
                 [ p [] [ text "The server responded with data of an unexpected type." ]
                 , p [] [ text message ]
                 ]
 
-        NetworkError ->
+        Http.NetworkError ->
             div [] [ text "There was a network error." ]
 
-        Timeout ->
+        Http.Timeout ->
             div [] [ text "The network request timed out." ]
 
-        BadResponse response ->
+        Http.BadStatus response ->
             div []
                 [ div [] [ text "The server indicated the following error:" ]
                 , div [] [ text response.data ]
