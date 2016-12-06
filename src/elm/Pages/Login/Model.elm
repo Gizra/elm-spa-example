@@ -1,5 +1,6 @@
 module Pages.Login.Model exposing (..)
 
+import Http
 import RemoteData exposing (RemoteData(..), WebData)
 import User.Model exposing (User)
 
@@ -25,8 +26,8 @@ type alias Model =
 
 
 type Msg
-    = HandleFetchedAccessToken (WebData AccessToken)
-    | HandleFetchedUser AccessToken (WebData User)
+    = HandleFetchedAccessToken (Result Http.Error AccessToken)
+    | HandleFetchedUser AccessToken (Result Http.Error User)
     | SetName String
     | SetPassword String
     | TryLogin

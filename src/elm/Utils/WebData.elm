@@ -10,9 +10,12 @@ import Task
 
 {-| Provide some `Html` to view an error message.
 -}
-viewError : Http.Error String -> Html any
+viewError : Http.Error -> Html any
 viewError error =
     case error of
+        Http.BadUrl message ->
+            div [] [ text "URL is not valid." ]
+
         Http.BadPayload message _ ->
             div []
                 [ p [] [ text "The server responded with data of an unexpected type." ]
@@ -28,7 +31,7 @@ viewError error =
         Http.BadStatus response ->
             div []
                 [ div [] [ text "The server indicated the following error:" ]
-                , div [] [ text response.data ]
+                , div [] [ text response.status.message ]
                 ]
 
 
@@ -65,20 +68,17 @@ like this:
             |> -- whatever you need to finish the `RequestBuilder`
             |> sendWithHandler decodeLiveSessionId HandleFetchedId
 -}
-sendWithHandler : Decoder a -> (WebData a -> msg) -> RequestBuilder -> Cmd msg
+
+
+
+-- sendWithHandler : Decoder a -> (WebData a -> msg) -> RequestBuilder -> Cmd msg
+
+
 sendWithHandler decoder tagger builder =
     builder
-        -- First, constract the `Task` from the `RequestBuilder`
-        |>
-            send (jsonReader decoder) stringReader
-        -- Then, on success, extract the decoded data that `HttpBuilder`
-        -- wraps in a `Response`.
-        |>
-            Task.map .data
-        -- Then, use `RemoteData` to turn success or failure into the
-        -- appropriate kind of `WebData`
-        |>
-            RemoteData.asCmd
-        -- Finally, feed it back into our app with the appropriate `Msg`
-        |>
-            Cmd.map tagger
+        |> withExpect (Http.expectJson decoder)
+        |> send tagger
+
+
+
+-- |> RemoteData.asCmd

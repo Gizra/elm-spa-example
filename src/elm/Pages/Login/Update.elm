@@ -2,7 +2,6 @@ module Pages.Login.Update exposing (fetchUserFromBackend, update)
 
 import Config.Model exposing (BackendUrl)
 import HttpBuilder exposing (..)
-import Task
 import User.Model exposing (..)
 import Pages.Login.Model as Login exposing (..)
 import Pages.Login.Decoder exposing (..)
@@ -13,20 +12,28 @@ import Utils.WebData exposing (sendWithHandler)
 update : BackendUrl -> Msg -> Model -> ( Model, Cmd Msg, ( WebData User, AccessToken ) )
 update backendUrl msg model =
     case msg of
-        HandleFetchedAccessToken webDataAccessToken ->
-            let
-                accessToken =
-                    Maybe.withDefault "" <| RemoteData.toMaybe webDataAccessToken
-            in
-                ( model
-                , fetchUserFromBackend backendUrl accessToken
-                , ( NotAsked, accessToken )
-                )
+        HandleFetchedAccessToken (Ok accessToken) ->
+            ( model
+            , fetchUserFromBackend backendUrl accessToken
+            , ( NotAsked, accessToken )
+            )
 
-        HandleFetchedUser accessToken webDataUser ->
+        HandleFetchedAccessToken (Err err) ->
             ( model
             , Cmd.none
-            , ( webDataUser, accessToken )
+            , ( NotAsked, "" )
+            )
+
+        HandleFetchedUser accessToken (Ok user) ->
+            ( model
+            , Cmd.none
+            , ( Success user, accessToken )
+            )
+
+        HandleFetchedUser accessToken (Err err) ->
+            ( model
+            , Cmd.none
+            , ( Failure err, accessToken )
             )
 
         SetName name ->
@@ -79,9 +86,6 @@ fetchAccessTokenFromBackend backendUrl loginForm =
 -}
 fetchUserFromBackend : BackendUrl -> String -> Cmd Msg
 fetchUserFromBackend backendUrl accessToken =
-    let
-        url =
-            HttpBuilder.url (backendUrl ++ "/api/me") [ ( "access_token", accessToken ) ]
-    in
-        HttpBuilder.get url
-            |> sendWithHandler decodeUser HandleFetchedUser
+    HttpBuilder.get (backendUrl ++ "/api/me")
+        |> withQueryParams [ ( "access_token", accessToken ) ]
+        |> sendWithHandler decodeUser (HandleFetchedUser accessToken)
