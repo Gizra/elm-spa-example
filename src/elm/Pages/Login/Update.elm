@@ -21,7 +21,7 @@ update backendUrl msg model =
         HandleFetchedAccessToken (Err err) ->
             ( model
             , Cmd.none
-            , ( NotAsked, "" )
+            , ( Failure err, "" )
             )
 
         HandleFetchedUser accessToken (Ok user) ->
