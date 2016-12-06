@@ -45,7 +45,7 @@ view user model =
                     ]
                     []
                 , input
-                    [ type_ "text"
+                    [ type_ "password"
                     , placeholder "Password"
                     , onInput SetPassword
                     , value model.loginForm.pass
