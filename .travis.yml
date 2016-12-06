@@ -7,7 +7,7 @@ cache:
     - sysconfcpus
 
 install:
-  - npm install -g elm@~0.17.0 casperjs http-server
+  - npm install -g elm@~0.18.0 casperjs http-server
   - elm-package install -y
   - |
     if [ ! -d sysconfcpus/bin ];
