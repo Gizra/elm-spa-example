@@ -1,18 +1,21 @@
-module Main exposing (..)
+port module Main exposing (..)
 
-import ElmTest exposing (..)
 import App.Test as App exposing (..)
-import Pages.Login.Test as PagesLogin exposing (..)
+import Json.Encode exposing (Value)
+import Test.Runner.Node exposing (run, TestProgram)
+import Tests
 
 
 allTests : Test
 allTests =
-    suite "All tests"
+    describe "All tests"
         [ App.all
-        , PagesLogin.all
         ]
 
 
-main : Program Never
+main : TestProgram
 main =
-    runSuiteHtml allTests
+    run emit allTests
+
+
+port emit : ( String, Value ) -> Cmd msg
