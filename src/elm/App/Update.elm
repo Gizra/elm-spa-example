@@ -40,9 +40,6 @@ update msg model =
 
                 _ ->
                     ""
-
-        _ =
-            Debug.log "backendUrl" backendUrl
     in
         case msg of
             Logout ->
