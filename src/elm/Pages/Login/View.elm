@@ -6,6 +6,7 @@ import Html.Events exposing (onClick, onInput, onSubmit)
 import Pages.Login.Model exposing (..)
 import RemoteData exposing (RemoteData(..), WebData)
 import User.Model exposing (..)
+import Utils.WebData exposing (viewError)
 
 
 view : WebData User -> Model -> Html Msg
@@ -30,6 +31,14 @@ view user model =
                 [ ( "ui action input", True )
                 , ( "error", isError )
                 ]
+
+        error =
+            case user of
+                Failure err ->
+                    div [ class "ui error" ] [ viewError err ]
+
+                _ ->
+                    div [] []
     in
         Html.form
             [ onSubmit TryLogin
@@ -60,4 +69,5 @@ view user model =
                     , span [ hidden isLoading ] [ text "Login" ]
                     ]
                 ]
+            , error
             ]
