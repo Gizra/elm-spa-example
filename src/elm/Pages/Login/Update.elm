@@ -15,7 +15,7 @@ update backendUrl msg model =
         HandleFetchedAccessToken (Ok accessToken) ->
             ( model
             , fetchUserFromBackend backendUrl accessToken
-            , ( NotAsked, accessToken )
+            , ( Loading, accessToken )
             )
 
         HandleFetchedAccessToken (Err err) ->
