@@ -1,93 +1,96 @@
-module Pages.Login.Update exposing (update, Msg(..))
+module Pages.Login.Update exposing (fetchUserFromBackend, update)
 
-import Exts.RemoteData exposing (RemoteData(..), WebData)
-import Http
-import Regex exposing (regex, replace, HowMany(All))
-import String exposing (isEmpty)
+import Config.Model exposing (BackendUrl)
+import HttpBuilder exposing (..)
 import Task
-import User.Decoder exposing (..)
 import User.Model exposing (..)
 import Pages.Login.Model as Login exposing (..)
+import Pages.Login.Decoder exposing (..)
+import RemoteData exposing (RemoteData(..))
+import Utils.WebData exposing (WebData)
 
 
-init : ( Model, Cmd Msg )
-init =
-    emptyModel ! []
-
-
-update : WebData User -> Msg -> Model -> ( Model, Cmd Msg, WebData User )
-update user msg model =
+update : BackendUrl -> Msg -> Model -> ( Model, Cmd Msg, ( WebData User, AccessToken ) )
+update backendUrl msg model =
     case msg of
-        FetchSucceed github ->
-            ( model, Cmd.none, Success github )
+        FetchSucceed response ->
+            let
+                accessToken =
+                    response.data
+            in
+                ( model, fetchUserFromBackend backendUrl accessToken, ( NotAsked, accessToken ) )
+
+        FetchUserSucceed accessToken response ->
+            ( model
+            , Cmd.none
+            , ( Success response.data, accessToken )
+            )
 
         FetchFail err ->
-            ( model, Cmd.none, Failure err )
+            ( model
+            , Cmd.none
+            , ( Failure err, "" )
+            )
 
-        SetLogin login ->
+        SetName name ->
             let
-                -- Remove spaces from login.
-                noSpacesLogin =
-                    replace All (regex " ") (\_ -> "") login
+                loginForm =
+                    model.loginForm
 
-                userStatus =
-                    getUserStatusFromNameChange user model.login noSpacesLogin
+                loginForm' =
+                    { loginForm | name = name }
             in
-                ( { model | login = noSpacesLogin }, Cmd.none, userStatus )
+                ( { model | loginForm = loginForm' }
+                , Cmd.none
+                , ( NotAsked, "" )
+                )
+
+        SetPassword pass ->
+            let
+                loginForm =
+                    model.loginForm
+
+                loginForm' =
+                    { loginForm | pass = pass }
+            in
+                ( { model | loginForm = loginForm' }
+                , Cmd.none
+                , ( NotAsked, "" )
+                )
 
         TryLogin ->
-            let
-                ( cmd, userStatus ) =
-                    getCmdAndUserStatusForTryLogin user model.login
-            in
-                ( model, cmd, userStatus )
+            ( model
+            , fetchFromBackend backendUrl model.loginForm
+            , ( Loading, "" )
+            )
 
 
-{-| Try to fetch the user from GitHub only if it was not asked yet.
-In case we are still loading, error or a succesful fetch we don't want to repeat
-it.
+{-| Get data from backend.
 -}
-getCmdAndUserStatusForTryLogin : WebData User -> String -> ( Cmd Msg, WebData User )
-getCmdAndUserStatusForTryLogin user login =
-    case user of
-        NotAsked ->
-            if isEmpty login then
-                -- login was not asked, however it is empty.
-                ( Cmd.none, NotAsked )
-            else
-                -- Fetch the login from GitHub, and indicate we are
-                -- in the middle of "Loading".
-                ( fetchFromGitHub login, Loading )
+fetchFromBackend : BackendUrl -> LoginForm -> Cmd Msg
+fetchFromBackend backendUrl loginForm =
+    let
+        credentials =
+            encodeCredentials ( loginForm.name, loginForm.pass )
 
-        _ ->
-            -- We are not in "NotAsked" state, so return the existing
-            -- value
-            ( Cmd.none, user )
+        httpTask =
+            HttpBuilder.get (backendUrl ++ "/api/login-token")
+                |> withHeader "Authorization" ("Basic " ++ credentials)
+                |> send (jsonReader decodeAccessToken) (jsonReader decodeError)
+    in
+        Task.perform FetchFail FetchSucceed httpTask
 
 
-{-| Determine if the user status should change after setting a new name.
-When there is a valid name change, status should change to NotAsked.
-However if for example a user just tried to add a space to the name, so after
-triming it's actually the same. Thus, we avoid changing the user status to
-prevent from re-fetching a possibly wrong name.
-For example, if the user status would have been Failure, the existing name is
-"foo" and user tried to pass "foo " (notice the trailing space), then in fact no
-change should happen.
+{-| Get data from backend.
 -}
-getUserStatusFromNameChange : WebData User -> String -> String -> WebData User
-getUserStatusFromNameChange user currentName newName =
-    if currentName == newName then
-        user
-    else
-        NotAsked
-
-
-{-| Get data from GitHub.
--}
-fetchFromGitHub : String -> Cmd Msg
-fetchFromGitHub login =
+fetchUserFromBackend : BackendUrl -> String -> Cmd Msg
+fetchUserFromBackend backendUrl accessToken =
     let
         url =
-            "https://api.github.com/users/" ++ login
+            HttpBuilder.url (backendUrl ++ "/api/me") [ ( "access_token", accessToken ) ]
+
+        httpTask =
+            HttpBuilder.get url
+                |> send (jsonReader decodeUser) stringReader
     in
-        Task.perform FetchFail FetchSucceed (Http.get decodeFromGithub url)
+        Task.perform FetchFail (FetchUserSucceed accessToken) httpTask

@@ -1,7 +1,8 @@
 module App.Update exposing (init, update, Msg(..))
 
 import App.Model exposing (..)
-import Exts.RemoteData exposing (RemoteData(..), WebData)
+import RemoteData exposing (RemoteData(..))
+import Utils.WebData exposing (WebData)
 import User.Model exposing (..)
 import Pages.Login.Update exposing (Msg)
 
@@ -28,7 +29,9 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Logout ->
-            init
+            ( { emptyModel | accessToken = "", config = model.config }
+            , accessTokenPort ""
+            )
 
         PageLogin msg ->
             let

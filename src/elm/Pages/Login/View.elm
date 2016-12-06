@@ -1,12 +1,12 @@
 module Pages.Login.View exposing (view)
 
-import Exts.RemoteData exposing (RemoteData(..), WebData)
+import RemoteData exposing (RemoteData(..))
+import Utils.WebData exposing (WebData)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import User.Model exposing (..)
 import Pages.Login.Model exposing (..)
-import Pages.Login.Update exposing (..)
 
 
 view : WebData User -> Model -> Html Msg
@@ -39,16 +39,22 @@ view user model =
             ]
             [ div [ inputClasses ]
                 [ input
-                    [ type_ "text"
-                    , placeholder "Github name"
-                    , onInput SetLogin
-                    , value model.login
+                    [ type' "text"
+                    , placeholder "Name"
+                    , onInput SetName
+                    , value model.loginForm.name
+                    ]
+                    []
+                , input
+                    [ type' "text"
+                    , placeholder "Password"
+                    , onInput SetPassword
+                    , value model.loginForm.pass
                     ]
                     []
                   -- Submit button
                 , button
-                    [ onClick TryLogin
-                    , disabled (isLoading || isError)
+                    [ disabled isLoading
                     , class "ui primary button"
                     ]
                     [ span [ hidden <| not isLoading ] [ spinner ]
