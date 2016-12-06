@@ -39,7 +39,7 @@ view user model =
             ]
             [ div [ inputClasses ]
                 [ input
-                    [ type' "text"
+                    [ type_ "text"
                     , placeholder "Github name"
                     , onInput SetLogin
                     , value model.login

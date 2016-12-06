@@ -85,14 +85,14 @@ viewPageNotFoundItem activePage =
 viewAvatar : WebData User -> Html Msg
 viewAvatar user =
     case user of
-        Success user' ->
+        Success user_ ->
             a
                 [ onClick <| SetActivePage MyAccount
                 , class "ui item"
                 ]
                 [ img
                     [ class "ui avatar image"
-                    , src user'.avatarUrl
+                    , src user_.avatarUrl
                     ]
                     []
                 ]

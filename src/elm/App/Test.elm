@@ -25,7 +25,7 @@ setActivePage =
 getPageAsAnonymous : Page -> Page
 getPageAsAnonymous page =
     update (SetActivePage page) emptyModel
-        |> fst
+        |> Tuple.first
         |> .activePage
 
 
@@ -39,7 +39,7 @@ getPageAsAuthenticated page =
             { emptyModel | user = Success dummyUser }
     in
         update (SetActivePage page) model
-            |> fst
+            |> Tuple.first
             |> .activePage
 
 

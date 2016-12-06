@@ -16,7 +16,7 @@ view user =
             case user of
                 Success val ->
                     let
-                        name' =
+                        name_ =
                             case val.name of
                                 Just name ->
                                     name
@@ -24,7 +24,7 @@ view user =
                                 Nothing ->
                                     val.login
                     in
-                        ( name', val.login, img [ src val.avatarUrl ] [] )
+                        ( name_, val.login, img [ src val.avatarUrl ] [] )
 
                 _ ->
                     ( "", "", div [] [] )
