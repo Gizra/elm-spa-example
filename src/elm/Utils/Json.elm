@@ -14,6 +14,16 @@ decodeInt : Decoder Int
 decodeInt =
     Decode.oneOf
         [ Decode.int
+        , Decode.string
+            |> Decode.andThen
+                (\val ->
+                    case String.toInt val of
+                        Ok int ->
+                            Decode.succeed int
+
+                        Err _ ->
+                            Decode.fail "Cannot convert string to integer"
+                )
           -- @todo: Needs to be re-added
           -- , Decode.customDecoder Decode.string String.toInt
         ]
