@@ -166,7 +166,7 @@ gulp.task('elm-init', elm.init);
 gulp.task('elm', ['elm-init'], function(){
   return gulp.src('src/elm/Main.elm')
     .pipe(plumber())
-    .pipe(elm())
+    .pipe(elm({'debug': true, 'warn' : true}))
     .on('error', function(err) {
         console.error(err.message);
 
