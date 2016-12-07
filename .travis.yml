@@ -25,4 +25,4 @@ install:
   - elm-ops-tooling/with_retry.rb elm package install --yes
 
 script:
-  - elm-test Main.elm
+  - elm-test ./src/elm/TestRunner.elm
