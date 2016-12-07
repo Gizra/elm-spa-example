@@ -19,7 +19,6 @@ install:
   - nvm use $TARGET_NODE_VERSION
   - node --version
   - npm --version
-  - cd tests
   - npm install -g elm@$ELM_VERSION elm-test
   - git clone https://github.com/NoRedInk/elm-ops-tooling
   - elm-ops-tooling/with_retry.rb elm package install --yes
