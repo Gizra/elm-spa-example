@@ -5,6 +5,5 @@ install:
   - npm install -g elm@~0.18.0
   - npm install -g elm-test
   - elm-package install -y
-  - pushd tests && elm-package install -y && popd
 script:
   - elm-test ./src/elm/TestRunner.elm
