@@ -3,7 +3,7 @@ module App.Test exposing (all)
 import App.Model exposing (..)
 import App.Update exposing (..)
 import Expect
-import Test exposing (fuzz)
+import Test exposing (describe, test, Test)
 import RemoteData exposing (RemoteData(..))
 
 

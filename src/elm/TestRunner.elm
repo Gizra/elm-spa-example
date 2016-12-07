@@ -3,7 +3,7 @@ port module Main exposing (..)
 import App.Test as App exposing (..)
 import Json.Encode exposing (Value)
 import Test.Runner.Node exposing (run, TestProgram)
-import Tests
+import Test exposing (describe, Test)
 
 
 allTests : Test
