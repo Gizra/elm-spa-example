@@ -1,9 +1,28 @@
-language: node_js
-node_js:
-  - "5"
+sudo: false
+
+cache:
+  directories:
+    - tests/elm-stuff/build-artifacts
+
+os:
+  - linux
+
+env:
+  matrix:
+    - ELM_VERSION=0.18.0 TARGET_NODE_VERSION=node
+
+before_install:
+  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
 install:
-  - npm install -g elm@~0.18.0
-  - npm install -g elm-test
-  - elm-package install -y
+  - nvm install $TARGET_NODE_VERSION
+  - nvm use $TARGET_NODE_VERSION
+  - node --version
+  - npm --version
+  - cd tests
+  - npm install -g elm@$ELM_VERSION elm-test
+  - git clone https://github.com/NoRedInk/elm-ops-tooling
+  - elm-ops-tooling/with_retry.rb elm package install --yes
+
 script:
-  - elm-test ./src/elm/TestRunner.elm
+  - elm-test Main.elm
