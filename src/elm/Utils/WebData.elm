@@ -38,8 +38,10 @@ viewError error =
 {-| This is a convenience for the common pattern where we build a request with
 `HttpBuilder` and want to handle the result as a `WebData a`.
 -}
-sendWithHandler : Decoder a -> (Result Http.Error a -> msg) -> RequestBuilder a1 -> Cmd msg
+sendWithHandler : Decoder a -> (WebData a -> msg) -> RequestBuilder b -> Cmd msg
 sendWithHandler decoder tagger builder =
     builder
         |> withExpect (Http.expectJson decoder)
-        |> send tagger
+        |> toRequest
+        |> RemoteData.sendRequest
+        |> Cmd.map tagger

@@ -12,28 +12,27 @@ import Utils.WebData exposing (sendWithHandler)
 update : BackendUrl -> Msg -> Model -> ( Model, Cmd Msg, ( WebData User, AccessToken ) )
 update backendUrl msg model =
     case msg of
-        HandleFetchedAccessToken (Ok accessToken) ->
-            ( model
-            , fetchUserFromBackend backendUrl accessToken
-            , ( Loading, accessToken )
-            )
+        HandleFetchedAccessToken token ->
+            case token of
+                Success accessToken ->
+                    ( model
+                    , fetchUserFromBackend backendUrl accessToken
+                    , ( Loading, accessToken )
+                    )
 
-        HandleFetchedAccessToken (Err err) ->
+                Loading ->
+                    ( model, Cmd.none, ( Loading, "" ) )
+
+                Failure err ->
+                    ( model, Cmd.none, ( Failure err, "" ) )
+
+                NotAsked ->
+                    ( model, Cmd.none, ( NotAsked, "" ) )
+
+        HandleFetchedUser accessToken user ->
             ( model
             , Cmd.none
-            , ( Failure err, "" )
-            )
-
-        HandleFetchedUser accessToken (Ok user) ->
-            ( model
-            , Cmd.none
-            , ( Success user, accessToken )
-            )
-
-        HandleFetchedUser accessToken (Err err) ->
-            ( model
-            , Cmd.none
-            , ( Failure err, accessToken )
+            , ( user, accessToken )
             )
 
         SetName name ->
